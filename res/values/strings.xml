@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="app_name">MoapGpsTracker</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_moap_gps_tracker_main">MoapGpsTrackerMainActivity</string>
+
+</resources>
