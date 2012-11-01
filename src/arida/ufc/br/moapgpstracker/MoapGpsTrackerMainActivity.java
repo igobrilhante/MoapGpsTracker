@@ -1,6 +1,5 @@
 package arida.ufc.br.moapgpstracker;
 
-import com.mendhak.gpslogger.R;
 
 import android.os.Bundle;
 import android.app.Activity;

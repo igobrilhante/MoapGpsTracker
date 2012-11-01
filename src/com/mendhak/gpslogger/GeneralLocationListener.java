@@ -19,6 +19,8 @@ package com.mendhak.gpslogger;
 
 import android.location.*;
 import android.os.Bundle;
+import arida.ufc.br.moapgpstracker.R;
+
 import com.mendhak.gpslogger.common.Utilities;
 
 import java.util.Iterator;

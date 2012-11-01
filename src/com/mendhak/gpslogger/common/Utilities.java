@@ -24,7 +24,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import com.mendhak.gpslogger.R;
+import arida.ufc.br.moapgpstracker.R;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;

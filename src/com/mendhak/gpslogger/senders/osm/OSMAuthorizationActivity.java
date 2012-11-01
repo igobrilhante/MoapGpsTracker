@@ -25,7 +25,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import com.mendhak.gpslogger.GpsMainActivity;
-import com.mendhak.gpslogger.R;
+import arida.ufc.br.moapgpstracker.R;
 import com.mendhak.gpslogger.common.Utilities;
 import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;

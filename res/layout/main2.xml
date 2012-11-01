@@ -50,7 +50,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editText1"
+                    android:id="@+id/userComponent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="text" >
@@ -75,7 +75,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editText2"
+                    android:id="@+id/goalComponent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -142,7 +142,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/spinner1"
+                    android:id="@+id/activityListComponent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right" />
@@ -163,7 +163,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editText3"
+                    android:id="@+id/commentComponent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -201,7 +201,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/tableRow8"
+                android:id="@+id/latitudeRow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -216,7 +216,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/tableRow9"
+                android:id="@+id/longitudeRow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -231,7 +231,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/tableRow10"
+                android:id="@+id/altitudeRow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -246,7 +246,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/tableRow11"
+                android:id="@+id/speedRow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -261,7 +261,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/tableRow12"
+                android:id="@+id/directionRow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -276,7 +276,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/tableRow13"
+                android:id="@+id/accuracyRow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -291,7 +291,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/tableRow14"
+                android:id="@+id/travelledRow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -306,7 +306,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/tableRow15"
+                android:id="@+id/satellitesRow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"

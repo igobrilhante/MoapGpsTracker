@@ -24,7 +24,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import com.mendhak.gpslogger.GpsMainActivity;
-import com.mendhak.gpslogger.R;
+import arida.ufc.br.moapgpstracker.R;
 import com.mendhak.gpslogger.common.Utilities;
 
 public class DropBoxAuthorizationActivity extends PreferenceActivity
