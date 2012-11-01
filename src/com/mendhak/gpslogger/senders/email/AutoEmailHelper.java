@@ -37,7 +37,7 @@ public class AutoEmailHelper implements IActionListener, IFileSender
         this.callback = callback;
     }
 
-    @Override
+//    @Override
     public void UploadFile(List<File> files)
     {
 
@@ -86,7 +86,7 @@ public class AutoEmailHelper implements IActionListener, IFileSender
         callback.OnFailure();
     }
 
-    @Override
+//    @Override
     public boolean accept(File dir, String name)
     {
         return name.toLowerCase().endsWith(".zip")

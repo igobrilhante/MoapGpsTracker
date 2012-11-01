@@ -57,7 +57,7 @@ public class Kml22FileLogger implements IFileLogger
         EXECUTOR.execute(annotateHandler);
     }
 
-    @Override
+//    @Override
     public String getName()
     {
         return name;
@@ -78,7 +78,7 @@ class Kml22AnnotateHandler implements Runnable
     }
 
 
-    @Override
+//    @Override
     public void run()
     {
         if (!kmlFile.exists())
@@ -155,7 +155,7 @@ class Kml22WriteHandler implements Runnable
     }
 
 
-    @Override
+//    @Override
     public void run()
     {
         try

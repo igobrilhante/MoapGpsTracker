@@ -80,7 +80,6 @@ public class FileSenderFactory
 
         List<File> files = new ArrayList<File>(Arrays.asList(gpxFolder.listFiles(new FilenameFilter()
         {
-            @Override
             public boolean accept(File file, String s)
             {
                 return s.contains(currentFileName) && !s.contains("zip");

@@ -133,7 +133,7 @@ public class OSMHelper implements IActionListener, IFileSender
         callback.OnFailure();
     }
 
-    @Override
+//    @Override
     public void UploadFile(List<File> files)
     {
         //Upload only GPX
@@ -166,7 +166,7 @@ public class OSMHelper implements IActionListener, IFileSender
         t.start();
     }
 
-    @Override
+//    @Override
     public boolean accept(File dir, String name)
     {
         return name.toLowerCase().contains(".gpx");

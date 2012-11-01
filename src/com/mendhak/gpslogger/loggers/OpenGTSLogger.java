@@ -41,7 +41,7 @@ public class OpenGTSLogger implements IFileLogger
         this.useSatelliteTime = useSatelliteTime;
     }
 
-    @Override
+//    @Override
     public void Write(Location loc) throws Exception
     {
 
@@ -59,12 +59,12 @@ public class OpenGTSLogger implements IFileLogger
 
         IActionListener al = new IActionListener()
         {
-            @Override
+//            @Override
             public void OnComplete()
             {
             }
 
-            @Override
+//            @Override
             public void OnFailure()
             {
             }
@@ -75,14 +75,14 @@ public class OpenGTSLogger implements IFileLogger
 
     }
 
-    @Override
+//    @Override
     public void Annotate(String description, Location loc) throws Exception
     {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
+//    @Override
     public String getName()
     {
         return name;

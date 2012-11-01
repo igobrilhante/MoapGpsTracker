@@ -247,7 +247,7 @@ public class GDocsHelper implements IActionListener, IFileSender
         //Request a token (AccountManager will return a cached and probably expired token)
         GetAuthTokenFromAccountManager(accountManager, account, new AccountManagerCallback<Bundle>()
         {
-            @Override
+//            @Override
             public void run(AccountManagerFuture<Bundle> bundleAccountManagerFuture)
             {
                 //Save the (stale) token
@@ -259,7 +259,7 @@ public class GDocsHelper implements IActionListener, IFileSender
                 //Request a token again
                 GetAuthTokenFromAccountManager(accountManager, finalAccount, new AccountManagerCallback<Bundle>()
                 {
-                    @Override
+//                    @Override
                     public void run(AccountManagerFuture<Bundle> bundleAccountManagerFuture)
                     {
                         //and finally save it
@@ -303,19 +303,19 @@ public class GDocsHelper implements IActionListener, IFileSender
         }
     }
 
-    @Override
+//    @Override
     public void OnComplete()
     {
         callback.OnComplete();
     }
 
-    @Override
+//    @Override
     public void OnFailure()
     {
         callback.OnFailure();
     }
 
-    @Override
+//    @Override
     public void UploadFile(List<File> files)
     {
         //If there's a zip file, upload just that
@@ -375,7 +375,7 @@ public class GDocsHelper implements IActionListener, IFileSender
         }
     }
 
-    @Override
+//    @Override
     public boolean accept(File dir, String name)
     {
         return name.toLowerCase().endsWith(".zip")
@@ -400,7 +400,7 @@ public class GDocsHelper implements IActionListener, IFileSender
         }
 
 
-        @Override
+//        @Override
         public void run()
         {
 

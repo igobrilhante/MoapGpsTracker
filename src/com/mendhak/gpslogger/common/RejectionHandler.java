@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class RejectionHandler implements RejectedExecutionHandler
 {
 
-    @Override
+//    @Override
     public void rejectedExecution(Runnable runnable, ThreadPoolExecutor threadPoolExecutor)
     {
         Utilities.LogWarning("Could not write to GPX file, there were too many queued tasks.");

@@ -47,7 +47,7 @@ public class PlainTextFileLogger implements IFileLogger
         this.useSatelliteTime = useSatelliteTime;
     }
 
-    @Override
+//    @Override
     public void Write(Location loc) throws Exception
     {
         if (!file.exists())
@@ -91,14 +91,14 @@ public class PlainTextFileLogger implements IFileLogger
         output.close();
     }
 
-    @Override
+//    @Override
     public void Annotate(String description, Location loc) throws Exception
     {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
+//    @Override
     public String getName()
     {
         return name;

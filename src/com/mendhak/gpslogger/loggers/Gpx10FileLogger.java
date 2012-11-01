@@ -90,7 +90,7 @@ class Gpx10FileLogger implements IFileLogger
 
     }
 
-    @Override
+//    @Override
     public String getName()
     {
         return name;
@@ -114,7 +114,7 @@ class Gpx10AnnotateHandler implements Runnable
         this.dateTimeString = dateTimeString;
     }
 
-    @Override
+//    @Override
     public void run()
     {
 
@@ -235,7 +235,7 @@ class Gpx10WriteHandler implements Runnable
     }
 
 
-    @Override
+//    @Override
     public void run()
     {
         synchronized (Gpx10FileLogger.lock)

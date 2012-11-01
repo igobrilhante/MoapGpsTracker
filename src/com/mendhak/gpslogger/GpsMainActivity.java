@@ -1112,13 +1112,13 @@ public class GpsMainActivity extends Activity implements OnCheckedChangeListener
     }
 
 
-    @Override
+//    @Override
     public void OnComplete()
     {
         Utilities.HideProgress();
     }
 
-    @Override
+//    @Override
     public void OnFailure()
     {
         Utilities.HideProgress();

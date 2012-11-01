@@ -177,13 +177,13 @@ public class GpsLoggingService extends Service implements IActionListener
         }
     }
 
-    @Override
+//    @Override
     public void OnComplete()
     {
         Utilities.HideProgress();
     }
 
-    @Override
+//    @Override
     public void OnFailure()
     {
         Utilities.HideProgress();

@@ -82,7 +82,7 @@ public class GDocsSettingsActivity extends PreferenceActivity
 
     }
 
-    @Override
+//    @Override
     public boolean onPreferenceClick(Preference preference)
     {
         if (preference.getKey().equalsIgnoreCase("gdocs_test"))
@@ -173,7 +173,7 @@ public class GDocsSettingsActivity extends PreferenceActivity
 
     private class OnTokenAcquired implements AccountManagerCallback<Bundle>
     {
-        @Override
+//        @Override
         public void run(AccountManagerFuture<Bundle> bundleAccountManagerFuture)
         {
             try
@@ -204,14 +204,14 @@ public class GDocsSettingsActivity extends PreferenceActivity
         helper.UploadTestFile();
     }
 
-    @Override
+//    @Override
     public void OnComplete()
     {
         Utilities.HideProgress();
         handler.post(successUpload);
     }
 
-    @Override
+//    @Override
     public void OnFailure()
     {
         Utilities.HideProgress();

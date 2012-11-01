@@ -55,7 +55,7 @@ public class DropBoxAuthorizationActivity extends PreferenceActivity
 
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
-            @Override
+//            @Override
             public boolean onPreferenceClick(Preference preference)
             {
                 // This logs you out if you're logged in, or vice versa
