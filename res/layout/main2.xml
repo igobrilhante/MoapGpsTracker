@@ -80,8 +80,6 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="text" >
-
-                    <requestFocus />
                 </EditText>
             </TableRow>
         </TableLayout>
@@ -201,7 +199,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/latitudeRow"
+                android:id="@+id/tableRow8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -216,7 +214,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/longitudeRow"
+                android:id="@+id/tableRow9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -231,7 +229,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/altitudeRow"
+                android:id="@+id/tableRow10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -246,7 +244,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/speedRow"
+                android:id="@+id/tableRow11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -261,7 +259,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/directionRow"
+                android:id="@+id/tableRow12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -276,7 +274,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/accuracyRow"
+                android:id="@+id/tableRow13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -291,7 +289,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/travelledRow"
+                android:id="@+id/tableRow14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"
@@ -306,7 +304,7 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/satellitesRow"
+                android:id="@+id/tableRow15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dip"

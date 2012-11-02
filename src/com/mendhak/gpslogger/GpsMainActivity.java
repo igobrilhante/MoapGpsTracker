@@ -21,6 +21,7 @@ package com.mendhak.gpslogger;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.*;
 import android.location.Location;
@@ -87,7 +88,7 @@ public class GpsMainActivity extends Activity implements
 					SetMainButtonEnabled(false);
 				} else {
 					SetMainButtonChecked(true);
-					SetSinglePointButtonEnabled(false);
+					// SetSinglePointButtonEnabled(false);
 				}
 
 				// DisplayLocationInfo(Session.getCurrentLocationInfo());
@@ -133,6 +134,15 @@ public class GpsMainActivity extends Activity implements
 		commentComponent.setEnabled(enable);
 	}
 
+	private void activateUserGoal(boolean enable) {
+		Utilities.LogDebug("Activate User and Goal: " + enable);
+		EditText user = (EditText) findViewById(R.id.userComponent);
+		user.setEnabled(enable);
+
+		EditText goal = (EditText) findViewById(R.id.goalComponent);
+		goal.setEnabled(enable);
+	}
+
 	@Override
 	protected void onStart() {
 		Utilities.LogDebug("GpsMainActivity.onStart");
@@ -169,6 +179,7 @@ public class GpsMainActivity extends Activity implements
 	private void StopAndUnbindServiceIfRequired() {
 		Utilities.LogDebug("GpsMainActivity.StopAndUnbindServiceIfRequired");
 		if (Session.isBoundToService()) {
+
 			unbindService(gpsServiceConnection);
 			Session.setBoundToService(false);
 		}
@@ -203,18 +214,44 @@ public class GpsMainActivity extends Activity implements
 	 */
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		Utilities.LogDebug("GpsMainActivity.onCheckedChanged");
-		if (isChecked) {
-			// GetPreferences();
-			// SetSinglePointButtonEnabled(false);
-			// loggingService.SetupAutoSendTimers();
-			loggingService.StartLogging();
-			activateComponents(true);
-		} else {
-			// Activity list
-			activateComponents(false);
-			// SetSinglePointButtonEnabled(true);
-			loggingService.StopLogging();
+		EditText user = (EditText) findViewById(R.id.userComponent);
+		EditText goal = (EditText) findViewById(R.id.goalComponent);
+		Utilities.LogDebug("User: " + user);
+		Utilities.LogDebug("Goa: " + goal);
+		if (!user.getText().toString().trim().equals("")
+				&& !goal.getText().toString().trim().equals("")) {
+			if (isChecked) {
+				// GetPreferences();
+				// SetSinglePointButtonEnabled(false);
+				// loggingService.SetupAutoSendTimers();
+
+				loggingService.StartLogging();
+				activateComponents(true);
+				activateUserGoal(false);
+			}
+			else {
+				// Activity list
+				activateComponents(false);
+				activateUserGoal(true);
+				// SetSinglePointButtonEnabled(true);
+				loggingService.StopLogging();
+			}
 		}
+		/**
+		 * User and Goal EditText are empty
+		 */
+		else{
+			ToggleButton toggleButton = (ToggleButton)findViewById(R.id.buttonOnOff);
+			toggleButton.setChecked(false);
+			Utilities.LogDebug("GpsMainActivity.onCheckedChanged - Empty User/Goal");
+			AlertDialog alert = new AlertDialog.Builder(GetActivity()).create();
+			alert.setMessage("User and Goal Required");
+			alert.setCanceledOnTouchOutside(true);
+			alert.setCancelable(true);
+			
+			alert.show();
+		}
+		
 	}
 
 	/**
@@ -733,12 +770,12 @@ public class GpsMainActivity extends Activity implements
 	 * @param number
 	 *            The number of satellites
 	 */
-	/*
-	 * private void SetSatelliteInfo(int number) { //
-	 * Session.setSatelliteCount(number); // TextView txtSatellites = (TextView)
-	 * findViewById(R.id.txtSatellites); //
-	 * txtSatellites.setText(String.valueOf(number)); }
-	 */
+
+	private void SetSatelliteInfo(int number) { //
+		Session.setSatelliteCount(number); //
+		TextView txtSatellites = (TextView) findViewById(R.id.txtSatellites); //
+		txtSatellites.setText(String.valueOf(number));
+	}
 
 	/**
 	 * Given a location fix, processes it and displays it in the table on the
@@ -920,20 +957,20 @@ public class GpsMainActivity extends Activity implements
 	}
 
 	public void onFileName(String newFileName) {
-//		if (newFileName == null || newFileName.length() <= 0) {
-//			return;
-//		}
-//
-//		TextView txtFilename = (TextView) findViewById(R.id.txtFileName);
-//
-//		if (AppSettings.shouldLogToGpx() || AppSettings.shouldLogToKml()) {
-//
-//			txtFilename.setText(getString(
-//					R.string.summary_current_filename_format,
-//					Session.getCurrentFileName()));
-//		} else {
-//			txtFilename.setText("");
-//		}
+		// if (newFileName == null || newFileName.length() <= 0) {
+		// return;
+		// }
+		//
+		// TextView txtFilename = (TextView) findViewById(R.id.txtFileName);
+		//
+		// if (AppSettings.shouldLogToGpx() || AppSettings.shouldLogToKml()) {
+		//
+		// txtFilename.setText(getString(
+		// R.string.summary_current_filename_format,
+		// Session.getCurrentFileName()));
+		// } else {
+		// txtFilename.setText("");
+		// }
 
 	}
 
