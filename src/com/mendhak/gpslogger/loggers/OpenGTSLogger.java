@@ -30,7 +30,7 @@ import java.util.Date;
  *
  * @author Francisco Reynoso
  */
-public class OpenGTSLogger implements IFileLogger
+public class OpenGTSLogger implements ILogger
 {
 
     private boolean useSatelliteTime;
@@ -42,7 +42,7 @@ public class OpenGTSLogger implements IFileLogger
     }
 
 //    @Override
-    public void Write(Location loc) throws Exception
+    public void write(Location loc) throws Exception
     {
 
         Location nLoc = new Location(loc);
@@ -76,7 +76,7 @@ public class OpenGTSLogger implements IFileLogger
     }
 
 //    @Override
-    public void Annotate(String description, Location loc) throws Exception
+    public void annotate(String description, Location loc) throws Exception
     {
         // TODO Auto-generated method stub
 

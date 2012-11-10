@@ -27,7 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class Kml22FileLogger implements IFileLogger
+public class Kml22FileLogger implements ILogger
 {
     protected final static Object lock = new Object();
     private final static ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(1, 1, 60, TimeUnit.SECONDS,
@@ -45,13 +45,13 @@ public class Kml22FileLogger implements IFileLogger
     }
 
 
-    public void Write(Location loc) throws Exception
+    public void write(Location loc) throws Exception
     {
         Kml22WriteHandler writeHandler = new Kml22WriteHandler(useSatelliteTime, loc, kmlFile, addNewTrackSegment);
         EXECUTOR.execute(writeHandler);
     }
 
-    public void Annotate(String description, Location loc) throws Exception
+    public void annotate(String description, Location loc) throws Exception
     {
         Kml22AnnotateHandler annotateHandler = new Kml22AnnotateHandler(kmlFile, description, loc);
         EXECUTOR.execute(annotateHandler);

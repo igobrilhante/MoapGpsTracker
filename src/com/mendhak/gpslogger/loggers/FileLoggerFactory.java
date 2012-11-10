@@ -27,7 +27,7 @@ import java.util.List;
 
 public class FileLoggerFactory
 {
-    public static List<IFileLogger> GetFileLoggers()
+    public static List<ILogger> GetFileLoggers()
     {
         File gpxFolder = new File(Environment.getExternalStorageDirectory(), "GPSLogger");
         if (!gpxFolder.exists())
@@ -35,7 +35,7 @@ public class FileLoggerFactory
             gpxFolder.mkdirs();
         }
 
-        List<IFileLogger> loggers = new ArrayList<IFileLogger>();
+        List<ILogger> loggers = new ArrayList<ILogger>();
 
         if (AppSettings.shouldLogToGpx())
         {

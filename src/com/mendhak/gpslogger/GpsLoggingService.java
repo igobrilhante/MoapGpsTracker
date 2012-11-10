@@ -36,7 +36,7 @@ import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.loggers.FileLoggerFactory;
-import com.mendhak.gpslogger.loggers.IFileLogger;
+import com.mendhak.gpslogger.loggers.ILogger;
 import com.mendhak.gpslogger.senders.AlarmReceiver;
 import com.mendhak.gpslogger.senders.FileSenderFactory;
 
@@ -806,14 +806,14 @@ public class GpsLoggingService extends Service implements IActionListener
     private void WriteToFile(Location loc)
     {
         Utilities.LogDebug("GpsLoggingService.WriteToFile");
-        List<IFileLogger> loggers = FileLoggerFactory.GetFileLoggers();
+        List<ILogger> loggers = FileLoggerFactory.GetFileLoggers();
         Session.setAddNewTrackSegment(false);
 
-        for (IFileLogger logger : loggers)
+        for (ILogger logger : loggers)
         {
             try
             {
-                logger.Write(loc);
+                logger.write(loc);
                 Session.setAllowDescription(true);
             }
             catch (Exception e)

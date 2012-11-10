@@ -34,7 +34,7 @@ import com.mendhak.gpslogger.common.Utilities;
  * @author Jeroen van Wilgenburg
  *         https://github.com/jvwilge/gpslogger/commit/a7d45bcc1d5012513ff2246022ce4da2708adf47
  */
-public class PlainTextFileLogger implements IFileLogger
+public class PlainTextFileLogger implements ILogger
 {
 
     private File file;
@@ -48,7 +48,7 @@ public class PlainTextFileLogger implements IFileLogger
     }
 
 //    @Override
-    public void Write(Location loc) throws Exception
+    public void write(Location loc) throws Exception
     {
         if (!file.exists())
         {
@@ -92,7 +92,7 @@ public class PlainTextFileLogger implements IFileLogger
     }
 
 //    @Override
-    public void Annotate(String description, Location loc) throws Exception
+    public void annotate(String description, Location loc) throws Exception
     {
         // TODO Auto-generated method stub
 

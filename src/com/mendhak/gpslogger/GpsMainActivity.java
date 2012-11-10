@@ -39,7 +39,7 @@ import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.loggers.FileLoggerFactory;
-import com.mendhak.gpslogger.loggers.IFileLogger;
+import com.mendhak.gpslogger.loggers.ILogger;
 import com.mendhak.gpslogger.senders.FileSenderFactory;
 import com.mendhak.gpslogger.senders.IFileSender;
 import com.mendhak.gpslogger.senders.dropbox.DropBoxAuthorizationActivity;
@@ -139,8 +139,8 @@ public class GpsMainActivity extends Activity implements
 		EditText user = (EditText) findViewById(R.id.userComponent);
 		user.setEnabled(enable);
 
-		EditText goal = (EditText) findViewById(R.id.goalComponent);
-		goal.setEnabled(enable);
+//		EditText goal = (EditText) findViewById(R.id.goalComponent);
+//		goal.setEnabled(enable);
 	}
 
 	@Override
@@ -215,11 +215,10 @@ public class GpsMainActivity extends Activity implements
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		Utilities.LogDebug("GpsMainActivity.onCheckedChanged");
 		EditText user = (EditText) findViewById(R.id.userComponent);
-		EditText goal = (EditText) findViewById(R.id.goalComponent);
+//		EditText goal = (EditText) findViewById(R.id.goalComponent);
 		Utilities.LogDebug("User: " + user);
-		Utilities.LogDebug("Goa: " + goal);
-		if (!user.getText().toString().trim().equals("")
-				&& !goal.getText().toString().trim().equals("")) {
+//		Utilities.LogDebug("Goa: " + goal);
+		if (!user.getText().toString().trim().equals("")) {
 			if (isChecked) {
 				// GetPreferences();
 				// SetSinglePointButtonEnabled(false);

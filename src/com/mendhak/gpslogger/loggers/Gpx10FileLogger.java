@@ -28,7 +28,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
-class Gpx10FileLogger implements IFileLogger
+class Gpx10FileLogger implements ILogger
 {
     protected final static Object lock = new Object();
 
@@ -49,7 +49,7 @@ class Gpx10FileLogger implements IFileLogger
     }
 
 
-    public void Write(Location loc) throws Exception
+    public void write(Location loc) throws Exception
     {
         Date now;
 
@@ -69,7 +69,7 @@ class Gpx10FileLogger implements IFileLogger
         EXECUTOR.execute(writeHandler);
     }
 
-    public void Annotate(String description, Location loc) throws Exception
+    public void annotate(String description, Location loc) throws Exception
     {
         Date now;
 
