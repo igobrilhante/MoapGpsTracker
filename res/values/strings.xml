@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">MoapGpsTracker</string>
     <string name="settings_screen_name">GPSLogger Settings</string>
     <string name="ok">OK</string>
@@ -8,22 +9,15 @@
     <string name="description_added">Description added to file</string>
     <string name="not_yet">Not Yet</string>
     <string name="cant_add_description_until_next_point">You can\'t add a description until the next point has been
-        logged to a file.
-    </string>
+        logged to a file.</string>
     <string name="add_description">Add a description</string>
     <string name="letters_numbers">Use only letters and numbers</string>
 
     <!-- menu strings -->
     <string name="menu_settings">Settings</string>
-
-
-
-
-
     <string name="menu_annotate">Annotate</string>
     <string name="menu_share">Share</string>
     <string name="menu_exit">Exit</string>
-
 
     <!-- main form labels -->
     <string name="txt_latitude">Latitude:</string>
@@ -36,10 +30,8 @@
     <string name="txt_travel_distance">Travelled:</string>
     <string name="btn_start_logging">Start Logging</string>
     <string name="btn_stop_logging">Stop Logging</string>
-
-
     <string name="gpslogger_still_running">GPSLogger is still running.</string>
-
+    <string name="moapgpstracker_still_running">MoapGpsTracker is still running.</string>
     <string name="summary_loggingto">Logging to:</string>
     <string name="summary_loggingto_screen">screen only</string>
     <string name="summary_freq_every">Frequency:</string>
@@ -47,11 +39,7 @@
     <string name="summary_dist">Distance:</string>
     <string name="summary_dist_regardless">maximum</string>
     <string name="summary_current_filename">File:</string>
-    <string name="summary_current_filename_format">%s (in your GPSLogger folder)</string>
-
-
-
-
+    <string name="summary_current_filename_format">%s (in your MoapGpsTracker folder)</string>
     <string name="sharing_location_only">Location only</string>
     <string name="sharing_pick_file">Pick a file to share</string>
     <string name="sharing_mylocation">My location</string>
@@ -65,13 +53,8 @@
     <string name="meters">&#160;meters</string>
     <string name="error">Error</string>
     <string name="error_connection">Connection Error. Please check your phone settings.</string>
-
-
-
-
     <string name="gpsprovider_unavailable">No GPS provider available. Please check your location settings and enable a
-        location provider.
-    </string>
+        location provider.</string>
     <string name="started">Started</string>
     <string name="providername_using">&#160;&#160;&#160;&#160;(Using %s)</string>
     <string name="providername_gps">GPS satellites</string>
@@ -84,11 +67,8 @@
     <string name="kilometers_per_hour">&#160;km/h</string>
     <string name="kilometers">&#160;km</string>
     <string name="unknown_direction">unknown</string>
-
     <string name="sorry">Sorry</string>
     <string name="success">Yay!</string>
-
-
     <string name="direction_roughly">Roughly %s</string>
     <string name="direction_north">North</string>
     <string name="direction_northnortheast">North by Northeast</string>
@@ -106,7 +86,6 @@
     <string name="direction_westnorthwest">West by Northwest</string>
     <string name="direction_northwest">Northwest</string>
     <string name="direction_northnorthwest">North by Northwest</string>
-
     <string name="time_onesecond">1 second</string>
     <string name="time_halfminute">&#189; minute</string>
     <string name="time_oneminute">1 minute</string>
@@ -120,7 +99,6 @@
     <string name="error_displaying">Error in displaying location info: %s</string>
     <string name="degree_symbol">&#176;</string>
 
-
     <!-- Settings activity -->
 
     <string name="settings_distance_in_feet">Distance in feet</string>
@@ -129,8 +107,7 @@
     <string name="settings_enter_meters">Enter meters(max 9999)</string>
     <string name="settings_converting_title">Converting…</string>
     <string name="settings_converting_description">Converting minimum distance units. Values above 9999 are reset to
-        9999. The settings screen will now reload.
-    </string>
+        9999. The settings screen will now reload.</string>
 
     <!-- Settings -->
     <string name="pref_logging_title">Logging details</string>
@@ -146,54 +123,32 @@
     <string name="new_file_creation_summary">Whether to create a new file once a day or each time you start.</string>
     <string name="new_file_creation_onceaday">Once a day</string>
     <string name="new_file_creation_everystart">Every time I start</string>
-
     <string name="pref_performance_title">Performance</string>
     <string name="prefer_celltower_title">Prefer celltowers</string>
     <string name="prefer_celltower_summary">Uses celltowers rather than satellites. Less accurate, but saves more
-        battery.
-    </string>
+        battery.</string>
     <string name="time_before_logging_title">Time before logging</string>
-    <string name="time_before_logging_summary">Use 0 for maximum frequency, but slower is better for battery life.
-    </string>
+    <string name="time_before_logging_summary">Use 0 for maximum frequency, but slower is better for battery life.</string>
     <string name="time_before_logging_dialog_title">Time in seconds</string>
     <string name="time_before_logging_hint">Enter seconds (max 9999)</string>
     <string name="distance_before_logging_title">Distance before logging</string>
     <string name="distance_before_logging_summary">How far to travel before logging the next point. Use 0 to log all
-        points.
-    </string>
-
+        points.</string>
     <string name="useimperial_title">Use Imperial units</string>
     <string name="useimperial_summary">Use feet, miles and pints, none of that newfangled metric stuff.</string>
     <string name="show_notification_title">Show Notification</string>
-    <string name="show_notification_summary">Displays a reminder along with coordinates in the notification bar.
-    </string>
-
-
+    <string name="show_notification_summary">Displays a reminder along with coordinates in the notification bar.</string>
     <string name="enabledisablegps_title">Enable/Disable GPS</string>
     <string name="enabledisablegps_summary">Go to the phone settings to enable or disable the providers.</string>
-
     <string name="startonbootup_title">Start on bootup</string>
     <string name="startonbootup_summary">Launch app and start logging when phone starts</string>
-
     <string name="autoemail_title">Auto Email Setup</string>
     <string name="autoemail_summary">Automatically emails the log file to an address of your choice</string>
-
-
-
-
     <string name="please_wait">Please wait.</string>
-
     <string name="autoemail_autosend">Enable emails</string>
-    <string name="autoemail_autosend_summary">Enables sending the log file to an email address of your choosing.
-    </string>
-
-
+    <string name="autoemail_autosend_summary">Enables sending the log file to an email address of your choosing.</string>
     <string name="autoemail_target">Target email addresses</string>
-
-
     <string name="autoemail_frequency_whenistop">When I press stop</string>
-
-
     <string name="autoemail_frequency_8">After 8 hours</string>
     <string name="autoemail_frequency_6">After 6 hours</string>
     <string name="autoemail_frequency_5">After 5 hours</string>
@@ -220,93 +175,59 @@
     <string name="autoemail_test">Send a test email using the above settings</string>
     <string name="autoemail_sendingtest">Sending a test email</string>
     <string name="autoemail_testresult_success">Email was sent</string>
-
     <string name="autoemail_invalid_form">Invalid values</string>
-    <string name="autoemail_invalid_form_message">Please ensure that all of the fields have been filled in properly
-    </string>
-
+    <string name="autoemail_invalid_form_message">Please ensure that all of the fields have been filled in properly</string>
     <string name="fix_obtained">Fix obtained</string>
     <string name="started_waiting">GPS started, waiting for fix</string>
     <string name="gps_stopped">GPS paused</string>
     <string name="stopped">Stopped</string>
-
-
-
     <string name="osm_setup_title">OpenStreetMap</string>
-    <string name="osm_setup_summary">Set tags, description, visibility and authorization for uploading GPS Traces
-    </string>
+    <string name="osm_setup_summary">Set tags, description, visibility and authorization for uploading GPS Traces</string>
     <string name="osm_preferences_title">OpenStreetMap Preferences</string>
-
-
-
     <string name="osm_lbl_authorize">Authorize this app</string>
     <string name="osm_lbl_authorize_description">You will need to grant this app permissions in order to upload GPS
-        traces to OpenStreetMap. You can set tags, descriptions and visibility here after you have authorized this app.
-    </string>
-
-
+        traces to OpenStreetMap. You can set tags, descriptions and visibility here after you have authorized this app.</string>
     <string name="osm_requesttoken_url">http://www.openstreetmap.org/oauth/request_token</string>
     <string name="osm_accesstoken_url">http://www.openstreetmap.org/oauth/access_token</string>
     <string name="osm_authorize_url">http://www.openstreetmap.org/oauth/authorize</string>
     <string name="osm_gpstrace_url">http://www.openstreetmap.org/api/0.6/gpx/create</string>
-
     <string name="osm_upload">OpenStreetMap</string>
-
     <string name="osm_resetauth">Clear authorization</string>
     <string name="osm_resetauth_summary">Remove the local authorization used to talk to your OSM account.</string>
     <string name="osm_auth_error">An error occurred while trying to contact the OpenStreetMap servers. Check that your
-        phone has a connection or please try again later.
-    </string>
-
+        phone has a connection or please try again later.</string>
     <string name="osm_visibility">Visibility</string>
     <string name="osm_visibility_summary">Set the visibility of your GPS Trace uploads</string>
-
     <string name="osm_description">Description</string>
     <string name="osm_description_summary">The description to use when uploading a trace</string>
     <string name="osm_tags">Tags</string>
     <string name="osm_tags_summary">The tags to apply when uploading a trace</string>
-
-    <string name="no_files_found">No files found, nothing to share or upload.</string>
+    <string name="no_files_found">No files found.</string>
     <string name="osm_pick_file">Pick a file to upload</string>
-
     <string name="debuglog_title">Write to debug file</string>
-    <string name="debuglog_summary">Writes debug messages to a file on the SD card. Warning: The file grows very fast.
-    </string>
-
+    <string name="debuglog_summary">Writes debug messages to a file on the SD card. Warning: The file grows very fast.</string>
     <string name="pref_logging_summary">Time, distance, file creation</string>
     <string name="pref_general_title">General Options</string>
     <string name="pref_general_summary">Startup and display options</string>
-
-
     <string name="emailprovider_google">Google Mail</string>
     <string name="emailprovider_yahoo">Yahoo! Mail</string>
     <string name="emailprovider_msn">Windows Live Mail</string>
     <string name="emailprovider_manual">Manual</string>
     <string name="btn_single_point">Log a single point</string>
-
     <string name="dropbox_setup_title">Dropbox</string>
     <string name="dropbox_setup_summary">Authorize with Dropbox to allow file uploads</string>
     <string name="dropbox_authorize_description">To use Dropbox features, you will need to authorize GPSLogger to upload
-        files to your account.
-    </string>
+        files to your account.</string>
     <string name="dropbox_authorize">Authorize</string>
     <string name="dropbox_unauthorize">Remove Authorization</string>
     <string name="dropbox_unauthorize_description">You are authorized with Dropbox. Files will be uploaded to
-        \'Apps\\GPSLogger for Android\' You can unlink GPSLogger from Dropbox if you wish.
-    </string>
+        \'Apps\\GPSLogger for Android\' You can unlink GPSLogger from Dropbox if you wish.</string>
     <string name="dropbox_couldnotauthorize">Could not authorize with Dropbox, please try again later</string>
     <string name="dropbox_upload">Dropbox</string>
-
-
     <string name="menu_upload">Upload</string>
-
-
     <string name="autoemail_from">From address</string>
-    <string name="autoemail_from_summary">Some email providers require a from address. Use this only if you need it.
-    </string>
-
+    <string name="autoemail_from_summary">Some email providers require a from address. Use this only if you need it.</string>
     <string name="gdocs_upload">Google Docs</string>
-
     <string name="gdocs_settings_screenname">Google Docs Upload Settings</string>
     <string name="gdocs_startauthorization">Authorize with Google Docs</string>
     <string name="gdocs_authorize_summary">Takes you to Google Docs where you need to authorize GPSLogger</string>
@@ -319,33 +240,24 @@
     <string name="gdocs_testupload_error">Could not upload a test file</string>
     <string name="gdocs_testupload_success">Uploaded. Please check your Google Documents for a new file.</string>
     <string name="gdocs_selectgoogleaccount">Select a Google Account</string>
-    
     <string name="email_upload">Email a file</string>
-
     <string name="autoemail_sendto_csv">Comma separated email addresses</string>
-
-
     <string name="autosend_enabled">Allow auto sending</string>
     <string name="autosend_enabled_summary">Allows sending the files to various targets</string>
     <string name="autosend_frequency_summary">How frequently log files should be sent</string>
     <string name="autosend_frequency">How often?</string>
-
     <string name="autosend_sendzip_title">Send zip file</string>
     <string name="autosend_sendzip_summary">Send zip file where applicable. Disable to send individual files, or if the zip option is not
-        working for you
-    </string>
+        working for you</string>
     <string name="autosend_targets_category">Auto Send Targets</string>
     <string name="menu_email_now">Auto Send Now</string>
     <string name="autosend_sending">Auto sending</string>
     <string name="summary_autosend">Auto send:</string>
-
     <string name="pref_autosend_title">Auto send, email and upload</string>
     <string name="pref_autosend_summary">Email, share and upload options</string>
-
     <string name="shortcut_start">Start</string>
     <string name="shortcut_stop">Stop</string>
     <string name="shortcut_pickaction">Pick an action</string>
-
     <string name="log_opengts_title">Log to OpenGTS Server</string>
     <string name="log_opengts_summary">Send GPRMC data to an online OpenGTS server.</string>
     <string name="opengts_setup_title">OpenGTS Setup</string>
@@ -366,7 +278,6 @@
     <string name="autoopengts_server_path">Server Path</string>
     <string name="autoopengts_server_path_summary">Optional and only for HTTP-based communication. For example \'/gprmc/Data\'</string>
     <string name="autoopengts_device_id">Device ID</string>
-    <string name="txt_user"></string>
     <string name="txt_goal"></string>
     <string name="txt_activity"></string>
     <string name="txt_comment"></string>
@@ -375,5 +286,13 @@
     <string name="moap_activity">Activity</string>
     <string name="moap_comment">Comment</string>
     <string name="moap_info">Info</string>
+    <string name="menu_mapview">Map View</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_google_maps_view">GoogleMapsViewActivity</string>
+    <string name="title_activity_logger_list">LoggerListActivity</string>
+    <string name="menu_open">Open</string>
+    <string name="menu_comment">Comment</string>
+    <string name="menu_activity">Activity</string>
+    <string name="txt_user">User</string>
 
 </resources>

@@ -104,4 +104,10 @@ public class PlainTextFileLogger implements ILogger
         return name;
     }
 
+	public void annotate(String name, String description, Location loc)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

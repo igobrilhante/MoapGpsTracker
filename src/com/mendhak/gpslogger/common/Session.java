@@ -18,6 +18,10 @@
 package com.mendhak.gpslogger.common;
 
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import android.app.Application;
 import android.location.Location;
 
@@ -36,14 +40,17 @@ public class Session extends Application
     private static boolean notificationVisible;
     private static float autoSendDelay;
     private static long latestTimeStamp;
+    private static String username;
     private static boolean addNewTrackSegment = true;
     private static Location currentLocationInfo;
     private static Location previousLocationInfo;
+    private static List<Location> locationHistory;
     private static double totalTravelled;
     private static int numLegs;
     private static boolean isBound;
     private static boolean readyToBeAutoSent = false;
     private static boolean allowDescription = true;
+    private static Set<String> achievedAnnotations = new HashSet<String>();
     private static boolean isSinglePointMode = false;
 
     public static boolean isSinglePointMode()
@@ -51,6 +58,19 @@ public class Session extends Application
         return isSinglePointMode;
     }
 
+    
+    public static Set<String> getAchievedAnnotations(){
+    	return Session.achievedAnnotations;
+    }
+    
+    public static void clearAchievedAnnotations(){
+    	Session.achievedAnnotations.clear();
+    }
+    
+    public static void addAchievedAnnodation(String annotation){
+    	Session.achievedAnnotations.add(annotation);
+    }
+    
     public static void setSinglePointMode(boolean singlePointMode)
     {
         isSinglePointMode = singlePointMode;
@@ -309,6 +329,7 @@ public class Session extends Application
      */
     public static void setCurrentLocationInfo(Location currentLocationInfo)
     {
+    	
         Session.currentLocationInfo = currentLocationInfo;
     }
 
@@ -364,6 +385,23 @@ public class Session extends Application
     public static void setAllowDescription(boolean allowDescription)
     {
         Session.allowDescription = allowDescription;
+    }
+    
+    public static List<Location> getLocationHistory(){
+    	return locationHistory;
+    }
+    
+    public static void setLocationHistory(List<Location> locationHistory){
+    	Session.locationHistory = locationHistory;
+    }
+    
+    public static String getUserName(){
+    	return Session.username;
+    	
+    }
+    
+    public static void setUserName(String username){
+    	Session.username = username;
     }
 
 }

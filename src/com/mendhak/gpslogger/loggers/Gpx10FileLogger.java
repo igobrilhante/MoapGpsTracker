@@ -97,6 +97,13 @@ class Gpx10FileLogger implements ILogger
     }
 
 
+	public void annotate(String name, String description, Location loc)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }
 
 class Gpx10AnnotateHandler implements Runnable
@@ -204,6 +211,44 @@ class Gpx10AnnotateHandler implements Runnable
         }
 
         waypoint.append("<name>").append(description).append("</name>");
+
+        waypoint.append("<src>").append(loc.getProvider()).append("</src>");
+
+
+        waypoint.append("<time>").append(dateTimeString).append("</time>");
+
+        waypoint.append("</wpt>\n");
+
+        return waypoint.toString();
+    }
+    
+    private String GetWaypointXml(Location loc, String dateTimeString,String descriptionName, String description)
+    {
+
+        StringBuilder waypoint = new StringBuilder();
+
+        waypoint.append("\n<wpt lat=\"")
+                .append(String.valueOf(loc.getLatitude()))
+                .append("\" lon=\"")
+                .append(String.valueOf(loc.getLongitude()))
+                .append("\">");
+
+        if (loc.hasAltitude())
+        {
+            waypoint.append("<ele>").append(String.valueOf(loc.getAltitude())).append("</ele>");
+        }
+
+        if (loc.hasBearing())
+        {
+            waypoint.append("<course>").append(String.valueOf(loc.getBearing())).append("</course>");
+        }
+
+        if (loc.hasSpeed())
+        {
+            waypoint.append("<speed>").append(String.valueOf(loc.getSpeed())).append("</speed>");
+        }
+
+        waypoint.append("<"+descriptionName+">").append(description).append("</"+descriptionName+">");
 
         waypoint.append("<src>").append(loc.getProvider()).append("</src>");
 

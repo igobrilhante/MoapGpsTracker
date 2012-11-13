@@ -58,6 +58,10 @@ public class Utilities
         LogToDebugFile(message);
 
     }
+    
+    public static int convertCoordinates(double coord){
+    	return (int)(coord * 1e6);
+    }
 
     public static void LogError(String methodName, Exception ex)
     {
@@ -549,8 +553,8 @@ public class Utilities
     {
         /*
             Haversine formula:
-            A = sin²(Δlat/2) + cos(lat1).cos(lat2).sin²(Δlong/2)
-            C = 2.atan2(√a, √(1−a))
+            A = sin��(��lat/2) + cos(lat1).cos(lat2).sin��(��long/2)
+            C = 2.atan2(���a, ���(1���a))
             D = R.c
             R = radius of earth, 6371 km.
             All angles are in radians

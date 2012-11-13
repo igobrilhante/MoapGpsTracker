@@ -22,10 +22,12 @@ import android.location.Location;
 public interface ILogger
 {
 
-    void write(Location loc) throws Exception;
+    public void write(Location loc) throws Exception;
 
-    void annotate(String description, Location loc) throws Exception;
+    public void annotate(String description, Location loc) throws Exception;
+    
+    public void annotate(String name,String description,Location loc) throws Exception;
 
-    String getName();
+    public String getName();
 
 }

@@ -43,6 +43,7 @@ import com.mendhak.gpslogger.senders.FileSenderFactory;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -405,6 +406,7 @@ public class GpsLoggingService extends Service implements IActionListener
         AutoSendLogFileOnStop();
         CancelAlarm();
         Session.setCurrentLocationInfo(null);
+        Session.setLocationHistory(null);
         stopForeground(true);
 
         RemoveNotification();
@@ -467,19 +469,19 @@ public class GpsLoggingService extends Service implements IActionListener
         PendingIntent pending = PendingIntent.getActivity(getApplicationContext(), 0, contentIntent,
                 android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        Notification nfc = new Notification(R.drawable.gpsloggericon2, null, System.currentTimeMillis());
+        Notification nfc = new Notification(R.drawable.ic_moap_gps_tracker, null, System.currentTimeMillis());
         nfc.flags |= Notification.FLAG_ONGOING_EVENT;
 
         NumberFormat nf = new DecimalFormat("###.######");
 
-        String contentText = getString(R.string.gpslogger_still_running);
+        String contentText = getString(R.string.moapgpstracker_still_running);
         if (Session.hasValidLocation())
         {
             contentText = nf.format(Session.getCurrentLatitude()) + ","
                     + nf.format(Session.getCurrentLongitude());
         }
 
-        nfc.setLatestEventInfo(getApplicationContext(), getString(R.string.gpslogger_still_running),
+        nfc.setLatestEventInfo(getApplicationContext(), getString(R.string.moapgpstracker_still_running),
                 contentText, pending);
 
         gpsNotifyManager.notify(NOTIFICATION_ID, nfc);
@@ -733,6 +735,10 @@ public class GpsLoggingService extends Service implements IActionListener
         ResetCurrentFileName(false);
         Session.setLatestTimeStamp(System.currentTimeMillis());
         Session.setCurrentLocationInfo(loc);
+        if(Session.getLocationHistory() == null){
+        	Session.setLocationHistory(new ArrayList<Location>());
+        }
+        Session.getLocationHistory().add(loc);
         SetDistanceTraveled(loc);
         Notify();
         WriteToFile(loc);
@@ -815,6 +821,8 @@ public class GpsLoggingService extends Service implements IActionListener
             {
                 logger.write(loc);
                 Session.setAllowDescription(true);
+                Session.clearAchievedAnnotations();
+                
             }
             catch (Exception e)
             {

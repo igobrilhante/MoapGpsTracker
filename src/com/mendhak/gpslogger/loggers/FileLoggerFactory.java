@@ -29,7 +29,7 @@ public class FileLoggerFactory
 {
     public static List<ILogger> GetFileLoggers()
     {
-        File gpxFolder = new File(Environment.getExternalStorageDirectory(), "GPSLogger");
+        File gpxFolder = new File(Environment.getExternalStorageDirectory(), "MoapGpsTracker");
         if (!gpxFolder.exists())
         {
             gpxFolder.mkdirs();
@@ -59,6 +59,8 @@ public class FileLoggerFactory
         {
             loggers.add(new OpenGTSLogger(AppSettings.shouldUseSatelliteTime()));
         }
+        File file = new File(gpxFolder.getPath(), Session.getCurrentFileName() + ".csv");
+        loggers.add(new CsvLogger(file, AppSettings.shouldUseSatelliteTime()));
 
         return loggers;
     }
