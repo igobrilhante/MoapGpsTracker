@@ -99,7 +99,22 @@ class Gpx10FileLogger implements ILogger
 
 	public void annotate(String name, String description, Location loc)
 			throws Exception {
-		// TODO Auto-generated method stub
+        Date now;
+
+        if (useSatelliteTime)
+        {
+            now = new Date(loc.getTime());
+        }
+        else
+        {
+            now = new Date();
+        }
+
+        String dateTimeString = Utilities.GetIsoDateTime(now);
+
+        Gpx10AnnotateHandler annotateHandler = new Gpx10AnnotateHandler(name,description, gpxFile, loc, dateTimeString);
+        Utilities.LogDebug(String.format("There are currently %s tasks waiting on the GPX10 EXECUTOR.", EXECUTOR.getQueue().size()));
+        EXECUTOR.execute(annotateHandler);
 		
 	}
 
@@ -112,9 +127,19 @@ class Gpx10AnnotateHandler implements Runnable
     File gpxFile;
     Location loc;
     String dateTimeString;
+    String name = null;
 
     public Gpx10AnnotateHandler(String description, File gpxFile, Location loc, String dateTimeString)
     {
+        this.description = description;
+        this.gpxFile = gpxFile;
+        this.loc = loc;
+        this.dateTimeString = dateTimeString;
+    }
+    
+    public Gpx10AnnotateHandler(String name,String description, File gpxFile, Location loc, String dateTimeString)
+    {
+    	this.name = name;
         this.description = description;
         this.gpxFile = gpxFile;
         this.loc = loc;
@@ -138,8 +163,15 @@ class Gpx10AnnotateHandler implements Runnable
             }
 
             int startPosition = 346;
-
-            String wpt = GetWaypointXml(loc, dateTimeString, description);
+            
+            String wpt = "";
+            
+            if(name==null){
+            	wpt = GetWaypointXml(loc, dateTimeString, description);
+            	}
+            else{
+            	wpt = GetWaypointXml(loc, dateTimeString, name, description);
+            }
 
             try
             {

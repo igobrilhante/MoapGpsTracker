@@ -75,7 +75,8 @@ public class GpsMainActivity extends Activity implements
 		}
 
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			 Utilities.LogDebug("on service conenction: "+name+" "+service);
+			Utilities
+					.LogDebug("on service conenction: " + name + " " + service);
 			loggingService = ((GpsLoggingService.GpsLoggingBinder) service)
 					.getService();
 			GpsLoggingService.SetServiceClient(GpsMainActivity.this);
@@ -93,7 +94,7 @@ public class GpsMainActivity extends Activity implements
 					// SetSinglePointButtonEnabled(false);
 				}
 
-				 DisplayLocationInfo(Session.getCurrentLocationInfo());
+				DisplayLocationInfo(Session.getCurrentLocationInfo());
 			}
 
 			// Form setup - toggle button, display existing location info
@@ -129,15 +130,16 @@ public class GpsMainActivity extends Activity implements
 	private void activateComponents(boolean enable) {
 		// Activity list
 		Utilities.LogDebug("Activate Components: " + enable);
-//		Spinner spinner = (Spinner) findViewById(R.id.activityListComponent);
-//		spinner.setEnabled(enable);
+		// Spinner spinner = (Spinner) findViewById(R.id.activityListComponent);
+		// spinner.setEnabled(enable);
 
-//		EditText commentComponent = (EditText) findViewById(R.id.commentComponent);
-//		commentComponent.setEnabled(enable);
+		// EditText commentComponent = (EditText)
+		// findViewById(R.id.commentComponent);
+		// commentComponent.setEnabled(enable);
 	}
 
 	private void activateUserGoal(boolean enable) {
-//		Utilities.LogDebug("Activate User and Goal: " + enable);
+		// Utilities.LogDebug("Activate User and Goal: " + enable);
 		EditText user = (EditText) findViewById(R.id.userComponent);
 		user.setEnabled(enable);
 
@@ -310,7 +312,8 @@ public class GpsMainActivity extends Activity implements
 			TextView txtLoggingTo = (TextView) findViewById(R.id.txtLoggingTo);
 			TextView txtFrequency = (TextView) findViewById(R.id.txtFrequency);
 			TextView txtDistance = (TextView) findViewById(R.id.txtDistance);
-//			TextView txtAutoEmail = (TextView) findViewById(R.id.txtAutoEmail);
+			// TextView txtAutoEmail = (TextView)
+			// findViewById(R.id.txtAutoEmail);
 
 			List<ILogger> loggers = FileLoggerFactory.GetFileLoggers();
 
@@ -372,10 +375,11 @@ public class GpsMainActivity extends Activity implements
 									.replace(".", "");
 				}
 
-//				String autoEmailDesc = getString(getResources().getIdentifier(
-//						autoEmailResx, "string", getPackageName()));
-//
-//				txtAutoEmail.setText(autoEmailDesc);
+				// String autoEmailDesc =
+				// getString(getResources().getIdentifier(
+				// autoEmailResx, "string", getPackageName()));
+				//
+				// txtAutoEmail.setText(autoEmailDesc);
 			} else {
 				TableRow trAutoEmail = (TableRow) findViewById(R.id.trAutoEmail);
 				trAutoEmail.setVisibility(View.INVISIBLE);
@@ -453,9 +457,9 @@ public class GpsMainActivity extends Activity implements
 		// case R.id.mnuAnnotate:
 		// Annotate();
 		// break;
-		 case R.id.mnuShare:
-		 Share();
-		 break;
+		case R.id.mnuShare:
+			Share();
+			break;
 		// case R.id.mnuEmailnow:
 		// EmailNow();
 		// break;
@@ -507,7 +511,7 @@ public class GpsMainActivity extends Activity implements
 
 			final String locationOnly = getString(R.string.sharing_location_only);
 			final File gpxFolder = new File(
-					Environment.getExternalStorageDirectory(), "GPSLogger");
+					Environment.getExternalStorageDirectory(), "MoapGpsTracker");
 			if (gpxFolder.exists()) {
 
 				File[] enumeratedFiles = gpxFolder.listFiles();
@@ -661,11 +665,18 @@ public class GpsMainActivity extends Activity implements
 	private void getMapView() {
 		Utilities.LogDebug("GpsMainActivity.getMapVew");
 
+		String[] array = { Session.getCurrentFileName() + ".csv" };
+		startMapView(array);
+
+	}
+
+	private void startMapView(String[] array) {
 		Intent mapViewIntent = new Intent(GpsMainActivity.this,
 				GoogleMapsViewActivity.class);
-		
-		
+		mapViewIntent.putExtra("arida.ufc.br.moap.TrajectoryView", array);
+
 		startActivity(mapViewIntent);
+
 	}
 
 	/**
@@ -696,10 +707,12 @@ public class GpsMainActivity extends Activity implements
 		Utilities.LogDebug("GpsMainActivity.SelectMultipleFiles");
 		try {
 
-//			final String locationOnly = getString(R.string.sharing_location_only);
+			// final String locationOnly =
+			// getString(R.string.sharing_location_only);
 			File gpxFolder = new File(
-					Environment.getExternalStorageDirectory(), "GPSLogger");
-			Utilities.LogDebug(Environment.getExternalStorageDirectory().toString());
+					Environment.getExternalStorageDirectory(), "MoapGpsTracker");
+			Utilities.LogDebug(Environment.getExternalStorageDirectory()
+					.toString());
 			if (gpxFolder.exists()) {
 				Utilities.LogDebug("GPX Folder exists");
 				File[] enumeratedFiles = gpxFolder.listFiles();
@@ -712,14 +725,14 @@ public class GpsMainActivity extends Activity implements
 					}
 				});
 
-				final List<String> fileList = new ArrayList<String>(
+				List<String> fileList = new ArrayList<String>(
 						enumeratedFiles.length);
 
 				for (File f : enumeratedFiles) {
 					fileList.add(f.getName());
 				}
 
-//				fileList.add(0, locationOnly);
+				// fileList.add(0, locationOnly);
 				final String[] files = fileList.toArray(new String[fileList
 						.size()]);
 
@@ -733,72 +746,88 @@ public class GpsMainActivity extends Activity implements
 						getApplicationContext(),
 						android.R.layout.simple_list_item_multiple_choice,
 						files));
-				Button okButton = (Button)findViewById(R.id.fileListOkButton);
-				
-				final long[] ids = thelist.getCheckedItemIds();
-				okButton.setOnClickListener(new OnClickListener(){
+				for (int i = 0; i < fileList.size(); i++) {
+					System.out.println(fileList.get(i));
+				}
 
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						for(int i=0;i<ids.length;i++){
-							System.out.println(fileList.get((int) ids[i]));
-						}
+				thelist.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(AdapterView<?> av, View v,
+							int index, long arg) {
+
+						dialog.dismiss();
+						String chosenFileName = files[index];
+						String[] array = {chosenFileName};
+						startMapView(array);
 					}
-					
 				});
-				
-				
-//				thelist.setonsetOnItemClickListener(new OnItemClickListener() {
-//
-//					public void onItemClick(AdapterView<?> av, View v,
-//							int[] index, long arg) {
-//						dialog.dismiss();
-//						String chosenFileName = files[index];
-//
-//						final Intent intent = new Intent(GpsMainActivity.this,
-//								GoogleMapsViewActivity.class);
-//
-//						// intent.setType("text/plain");
-//						intent.setType("*/*");
-//
-//						if (chosenFileName.equalsIgnoreCase(locationOnly)) {
-//							intent.setType("text/plain");
-//						}
-//
-//						intent.putExtra(Intent.EXTRA_SUBJECT,
-//								getString(R.string.sharing_mylocation));
 
-						// if (Session.hasValidLocation()) {
-						// String bodyText = getString(
-						// R.string.sharing_googlemaps_link, String
-						// .valueOf(Session
-						// .getCurrentLatitude()),
-						// String.valueOf(Session
-						// .getCurrentLongitude()));
-						// intent.putExtra(Intent.EXTRA_TEXT, bodyText);
-						// intent.putExtra("sms_body", bodyText);
-						// }
+				// Button okButton =
+				// (Button)findViewById(R.id.fileListOkButton);
+				//
+				// // final long[] ids = thelist.getCheckedItemIds();
+				// okButton.setOnClickListener(new OnClickListener(){
+				//
+				// public void onClick(View v) {
+				// // TODO Auto-generated method stub
+				// // for(int i=0;i<ids.length;i++){
+				// // System.out.println(fileList.get((int) ids[i]));
+				// // }
+				// }
+				//
+				// });
 
-//						if (chosenFileName.length() > 0
-//								&& !chosenFileName
-//										.equalsIgnoreCase(locationOnly)) {
-//							intent.putExtra(Intent.EXTRA_STREAM, Uri
-//									.fromFile(new File(gpxFolder,
-//											chosenFileName)));
-//						}
-//
-//						startActivity(Intent.createChooser(intent,
-//								getString(R.string.sharing_via)));
-//
-//					}
-//				});
+				// thelist.setonsetOnItemClickListener(new OnItemClickListener()
+				// {
+				//
+				// public void onItemClick(AdapterView<?> av, View v,
+				// int[] index, long arg) {
+				// dialog.dismiss();
+				// String chosenFileName = files[index];
+				//
+				// final Intent intent = new Intent(GpsMainActivity.this,
+				// GoogleMapsViewActivity.class);
+				//
+				// // intent.setType("text/plain");
+				// intent.setType("*/*");
+				//
+				// if (chosenFileName.equalsIgnoreCase(locationOnly)) {
+				// intent.setType("text/plain");
+				// }
+				//
+				// intent.putExtra(Intent.EXTRA_SUBJECT,
+				// getString(R.string.sharing_mylocation));
+
+				// if (Session.hasValidLocation()) {
+				// String bodyText = getString(
+				// R.string.sharing_googlemaps_link, String
+				// .valueOf(Session
+				// .getCurrentLatitude()),
+				// String.valueOf(Session
+				// .getCurrentLongitude()));
+				// intent.putExtra(Intent.EXTRA_TEXT, bodyText);
+				// intent.putExtra("sms_body", bodyText);
+				// }
+
+				// if (chosenFileName.length() > 0
+				// && !chosenFileName
+				// .equalsIgnoreCase(locationOnly)) {
+				// intent.putExtra(Intent.EXTRA_STREAM, Uri
+				// .fromFile(new File(gpxFolder,
+				// chosenFileName)));
+				// }
+				//
+				// startActivity(Intent.createChooser(intent,
+				// getString(R.string.sharing_via)));
+				//
+				// }
+				// });
 				dialog.show();
 			} else {
 				Utilities.MsgBox(getString(R.string.sorry),
 						getString(R.string.no_files_found), this);
 			}
 		} catch (Exception ex) {
-			Utilities.LogError("SelectMultipleFiles", ex);
+			Utilities.LogError("Exception in SelectMultipleFiles", ex);
 		}
 	}
 
@@ -868,7 +897,7 @@ public class GpsMainActivity extends Activity implements
 		}
 	}
 
-	private void addAnnotationByName(final String annotationName){
+	private void addAnnotationByName(final String annotationName) {
 		Utilities.LogDebug("GpsMainActivity.AnnotationByName");
 
 		if (!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml()) {
@@ -892,7 +921,7 @@ public class GpsMainActivity extends Activity implements
 
 		// Set an EditText view to get user input
 		final EditText input = new EditText(getApplicationContext());
-		
+
 		alert.setView(input);
 
 		alert.setPositiveButton(R.string.ok,
@@ -901,7 +930,7 @@ public class GpsMainActivity extends Activity implements
 
 						final String desc = Utilities.CleanDescription(input
 								.getText().toString());
-						Annotate(annotationName,desc);
+						Annotate(annotationName, desc);
 					}
 				});
 		alert.setNegativeButton(R.string.cancel,
@@ -913,7 +942,7 @@ public class GpsMainActivity extends Activity implements
 
 		alert.show();
 	}
-	
+
 	/**
 	 * Prompts user for input, then adds text to log file
 	 */
@@ -942,7 +971,7 @@ public class GpsMainActivity extends Activity implements
 
 		// Set an EditText view to get user input
 		final EditText input = new EditText(getApplicationContext());
-		
+
 		alert.setView(input);
 
 		alert.setPositiveButton(R.string.ok,
@@ -979,15 +1008,16 @@ public class GpsMainActivity extends Activity implements
 			}
 		}
 	}
-	
-	private void Annotate(String name,String description) {
+
+	private void Annotate(String name, String description) {
 		Utilities.LogDebug("GpsMainActivity.Annotate(description)");
 
 		List<ILogger> loggers = FileLoggerFactory.GetFileLoggers();
 
 		for (ILogger logger : loggers) {
 			try {
-				logger.annotate(name,description, Session.getCurrentLocationInfo());
+				logger.annotate(name, description,
+						Session.getCurrentLocationInfo());
 				SetStatus(getString(R.string.description_added));
 				Session.addAchievedAnnodation(name);
 				Session.setAllowDescription(false);
@@ -996,7 +1026,6 @@ public class GpsMainActivity extends Activity implements
 			}
 		}
 	}
-	
 
 	/**
 	 * Clears the table, removes all values.
@@ -1104,8 +1133,8 @@ public class GpsMainActivity extends Activity implements
 			tvDateTime.setText(new Date(Session.getLatestTimeStamp())
 					.toLocaleString()
 					+ getString(R.string.providername_using, providerName));
-			tvLatitude.setText( String.valueOf(loc.getLatitude()));
-			tvLongitude.setText( String.valueOf(loc.getLongitude()));
+			tvLatitude.setText(String.valueOf(loc.getLatitude()));
+			tvLongitude.setText(String.valueOf(loc.getLongitude()));
 
 			if (loc.hasAltitude()) {
 
@@ -1161,8 +1190,8 @@ public class GpsMainActivity extends Activity implements
 				direction = Utilities.GetBearingDescription(bearingDegrees,
 						getApplicationContext());
 
-				txtDirection.setText(direction
-						+ "(" + String.valueOf(Math.round(bearingDegrees))
+				txtDirection.setText(direction + "("
+						+ String.valueOf(Math.round(bearingDegrees))
 						+ getString(R.string.degree_symbol) + ")");
 			} else {
 				txtDirection.setText(R.string.not_applicable);
@@ -1215,8 +1244,9 @@ public class GpsMainActivity extends Activity implements
 				}
 			}
 
-			txtTravelled.setText(String.valueOf(Math.round(distanceValue)) + " "
-					+ distanceUnit + " (" + Session.getNumLegs() + " points)");
+			txtTravelled.setText(String.valueOf(Math.round(distanceValue))
+					+ " " + distanceUnit + " (" + Session.getNumLegs()
+					+ " points)");
 
 		} catch (Exception ex) {
 			SetStatus(getString(R.string.error_displaying, ex.getMessage()));
@@ -1227,8 +1257,8 @@ public class GpsMainActivity extends Activity implements
 	public void OnLocationUpdate(Location loc) {
 		Utilities.LogDebug("GpsMainActivity.OnLocationUpdate");
 
-		DisplayLocationInfo(loc); 
-		 ShowPreferencesSummary();
+		DisplayLocationInfo(loc);
+		ShowPreferencesSummary();
 		SetMainButtonChecked(true);
 
 		if (Session.isSinglePointMode()) {
