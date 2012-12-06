@@ -36,22 +36,22 @@ public class FileLoggerFactory
         }
 
         List<ILogger> loggers = new ArrayList<ILogger>();
-
+        final String prefix = Session.getCurrentFileName();
         if (AppSettings.shouldLogToGpx())
         {
-            File gpxFile = new File(gpxFolder.getPath(), Session.getCurrentFileName() + ".gpx");
-            loggers.add(new Gpx10FileLogger(gpxFile, AppSettings.shouldUseSatelliteTime(), Session.shouldAddNewTrackSegment(), Session.getSatelliteCount()));
+            File gpxFile = new File(gpxFolder.getPath(), prefix  + ".gpx");
+            loggers.add(new Gpx10FileLogger(Session.getUserName(),gpxFile, AppSettings.shouldUseSatelliteTime(), Session.shouldAddNewTrackSegment(), Session.getSatelliteCount()));
         }
 
         if (AppSettings.shouldLogToKml())
         {
-            File kmlFile = new File(gpxFolder.getPath(), Session.getCurrentFileName() + ".kml");
+            File kmlFile = new File(gpxFolder.getPath(), prefix + ".kml");
             loggers.add(new Kml22FileLogger(kmlFile, AppSettings.shouldUseSatelliteTime(), Session.shouldAddNewTrackSegment()));
         }
 
         if (AppSettings.shouldLogToPlainText())
         {
-            File file = new File(gpxFolder.getPath(), Session.getCurrentFileName() + ".txt");
+            File file = new File(gpxFolder.getPath(), prefix  + ".txt");
             loggers.add(new PlainTextFileLogger(file, AppSettings.shouldUseSatelliteTime()));
         }
 
@@ -59,8 +59,8 @@ public class FileLoggerFactory
         {
             loggers.add(new OpenGTSLogger(AppSettings.shouldUseSatelliteTime()));
         }
-        File file = new File(gpxFolder.getPath(), Session.getCurrentFileName() + ".csv");
-        loggers.add(new CsvLogger(file, AppSettings.shouldUseSatelliteTime()));
+        File file = new File(gpxFolder.getPath(), prefix  + ".csv");
+        loggers.add(new CsvLogger(Session.getUserName(),file, AppSettings.shouldUseSatelliteTime()));
 
         return loggers;
     }

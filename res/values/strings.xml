@@ -296,5 +296,9 @@
     <string name="txt_user">User</string>
     <string name="txt_chart">Chart</string>
     <string name="txt_stats">Stats</string>
+    <string name="menu_changeuser">Change User</string>
+    <string name="txtUser"></string>
+    <string name="title_activity_authentication">AuthenticationActivity</string>
+    <string name="txt_login">Login</string>
 
 </resources>

@@ -596,20 +596,20 @@ public class GpsLoggingService extends Service implements IActionListener
 
         Utilities.LogDebug("GpsLoggingService.ResetCurrentFileName");
 
-        String newFileName = Session.getCurrentFileName();
+        String newFileName = Session.getUserName()+Session.getCurrentFileName();
         if (AppSettings.shouldCreateNewFileOnceADay())
         {
             // 20100114.gpx
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             newFileName = sdf.format(new Date());
-            Session.setCurrentFileName(newFileName);
+            Session.setCurrentFileName(Session.getUserName()+newFileName);
         }
         else if (newStart)
         {
             // 20100114183329.gpx
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             newFileName = sdf.format(new Date());
-            Session.setCurrentFileName(newFileName);
+            Session.setCurrentFileName(Session.getUserName()+newFileName);
         }
 
         if (IsMainFormVisible())

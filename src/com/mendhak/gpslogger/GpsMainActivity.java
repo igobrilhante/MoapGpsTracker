@@ -29,12 +29,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.util.SparseBooleanArray;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
-import arida.ufc.br.moapgpstracker.GoogleMapsViewActivity;
 import arida.ufc.br.moapgpstracker.R;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
@@ -53,6 +57,7 @@ import com.mendhak.gpslogger.senders.osm.OSMHelper;
 import com.mendhak.gpslogger.senders.opengts.OpenGTSActivity;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.*;
 
 public class GpsMainActivity extends Activity implements
@@ -64,6 +69,9 @@ public class GpsMainActivity extends Activity implements
 	 */
 	private static Intent serviceIntent;
 	private GpsLoggingService loggingService;
+	private SharedPreferences sharedPrefs;
+	public static final String MOAP = "moap";
+	public static final String MOAP_USER = "moap.user";
 
 	/**
 	 * Provides a connection to the GPS Logging Service
@@ -116,6 +124,27 @@ public class GpsMainActivity extends Activity implements
 		Utilities.LogInfo("GPSLogger started");
 
 		setContentView(R.layout.main2);
+		
+		// Shared preferences
+		this.sharedPrefs =  this.getSharedPreferences("moap", Context.MODE_PRIVATE);
+		
+		String user = this.sharedPrefs.getString("moap.user", "");
+		
+		/**
+		 * Set user name for logging
+		 */
+		if(!hasUsername()){
+			setUsername();
+		}
+		else{
+			TextView tvUser = (TextView)findViewById(R.id.txtUser);
+			tvUser.setText(user);
+		}
+
+		
+		
+//		addPreferencesFromResource(R.xml.initialsettings);
+//		PreferenceManager.setDefaultValues(this, R.xml.initialsettings, false);
 
 		// Moved to onResume to update the list of loggers
 		GetPreferences();
@@ -125,6 +154,61 @@ public class GpsMainActivity extends Activity implements
 		// Activity list
 		activateComponents(false);
 
+	}
+	
+	/*
+	 * Has username
+	 */
+	
+	private boolean hasUsername(){
+		// Shared preferences
+		this.sharedPrefs =  this.getSharedPreferences("moap", Context.MODE_PRIVATE);
+		
+		String user = this.sharedPrefs.getString("moap.user", "");
+		if(user==null || user.equals("")){
+			return false;
+		}
+		Session.setUserName(user);
+		return true;
+	}
+	
+	/*
+	 * Set username into shared preferences
+	 */
+	private void setUsername(){
+		
+		AlertDialog.Builder alert = new AlertDialog.Builder(
+				GpsMainActivity.this);
+
+		alert.setTitle("User name");
+		alert.setMessage("Select a username containing number or letters");
+
+		// Set an EditText view to get user input
+		final EditText input = new EditText(getApplicationContext());
+
+		alert.setView(input);
+		alert.setPositiveButton(R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						final String user = Utilities.CleanDescription(input
+								.getText().toString());
+						sharedPrefs.edit().putString(MOAP_USER, user).commit();
+						TextView tvUser = (TextView) findViewById(R.id.txtUser);
+						tvUser.setText(user);
+						Session.setUserName(user);
+						
+					}
+				});
+		alert.setNegativeButton(R.string.cancel,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Cancelled.
+					}
+				});
+
+		alert.show();
+		
 	}
 
 	private void activateComponents(boolean enable) {
@@ -138,10 +222,10 @@ public class GpsMainActivity extends Activity implements
 		// commentComponent.setEnabled(enable);
 	}
 
-	private void activateUserGoal(boolean enable) {
+	private void activateUser(boolean enable) {
 		// Utilities.LogDebug("Activate User and Goal: " + enable);
-		EditText user = (EditText) findViewById(R.id.userComponent);
-		user.setEnabled(enable);
+//		EditText user = (EditText) findViewById(R.id.userComponent);
+//		user.setEnabled(enable);
 
 		// EditText goal = (EditText) findViewById(R.id.goalComponent);
 		// goal.setEnabled(enable);
@@ -151,7 +235,7 @@ public class GpsMainActivity extends Activity implements
 	protected void onStart() {
 		Utilities.LogDebug("GpsMainActivity.onStart");
 		super.onStart();
-		StartAndBindService();
+		if(hasUsername()) StartAndBindService(); else setUsername();
 	}
 
 	@Override
@@ -159,7 +243,8 @@ public class GpsMainActivity extends Activity implements
 		Utilities.LogDebug("GpsMainactivity.onResume");
 		super.onResume();
 		// GetPreferences();
-		StartAndBindService();
+		if(hasUsername()) StartAndBindService(); else setUsername();
+		
 	}
 
 	/**
@@ -218,11 +303,12 @@ public class GpsMainActivity extends Activity implements
 	 */
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		Utilities.LogDebug("GpsMainActivity.onCheckedChanged");
-		EditText user = (EditText) findViewById(R.id.userComponent);
+		TextView txtUser = (TextView)findViewById(R.id.txtUser);
 		// EditText goal = (EditText) findViewById(R.id.goalComponent);
-		Utilities.LogDebug("User: " + user);
+		Utilities.LogDebug("User: " + txtUser.getText().toString().trim());
 		// Utilities.LogDebug("Goa: " + goal);
-		if (!user.getText().toString().trim().equals("")) {
+		if (!txtUser.getText().toString().trim().equals("")) {
+			
 			if (isChecked) {
 				GetPreferences();
 				SetSinglePointButtonEnabled(false);
@@ -230,11 +316,11 @@ public class GpsMainActivity extends Activity implements
 
 				loggingService.StartLogging();
 				activateComponents(true);
-				activateUserGoal(false);
+				activateUser(false);
 			} else {
 				// Activity list
 				activateComponents(false);
-				activateUserGoal(true);
+				activateUser(true);
 				SetSinglePointButtonEnabled(true);
 				loggingService.StopLogging();
 			}
@@ -245,14 +331,10 @@ public class GpsMainActivity extends Activity implements
 		else {
 			ToggleButton toggleButton = (ToggleButton) findViewById(R.id.buttonOnOff);
 			toggleButton.setChecked(false);
-			Utilities
-					.LogDebug("GpsMainActivity.onCheckedChanged - Empty User/Goal");
-			AlertDialog alert = new AlertDialog.Builder(GetActivity()).create();
-			alert.setMessage("User and Goal Required");
-			alert.setCanceledOnTouchOutside(true);
-			alert.setCancelable(true);
+			
+			setUsername();
 
-			alert.show();
+			
 		}
 
 	}
@@ -457,12 +539,15 @@ public class GpsMainActivity extends Activity implements
 		// case R.id.mnuAnnotate:
 		// Annotate();
 		// break;
-		case R.id.mnuShare:
-			Share();
-			break;
+//		case R.id.mnuShare:
+//			Share();
+//			break;
 		// case R.id.mnuEmailnow:
 		// EmailNow();
 		// break;
+		case R.id.mnuChangeUser:
+			setUsername();
+			break;
 		case R.id.mnuExit:
 			loggingService.StopLogging();
 			loggingService.stopSelf();
@@ -597,7 +682,7 @@ public class GpsMainActivity extends Activity implements
 		}
 
 	}
-
+	
 	private void SelectAndEmailFile() {
 		Utilities.LogDebug("GpsMainActivity.SelectAndEmailFile");
 
@@ -665,7 +750,7 @@ public class GpsMainActivity extends Activity implements
 	private void getMapView() {
 		Utilities.LogDebug("GpsMainActivity.getMapVew");
 
-		String[] array = { Session.getCurrentFileName() + ".csv" };
+		String[] array = { Session.getCurrentFileName() + ".txt" };
 		startMapView(array);
 
 	}
@@ -715,7 +800,18 @@ public class GpsMainActivity extends Activity implements
 					.toString());
 			if (gpxFolder.exists()) {
 				Utilities.LogDebug("GPX Folder exists");
-				File[] enumeratedFiles = gpxFolder.listFiles();
+				File[] enumeratedFiles = gpxFolder.listFiles(new FilenameFilter() {
+					
+					public boolean accept(File dir, String filename) {
+						// TODO Auto-generated method stub
+						
+						if(filename.endsWith(".txt")){
+							return true;
+						}
+						
+						return false;
+					}
+				});
 
 				Arrays.sort(enumeratedFiles, new Comparator<File>() {
 					public int compare(File f1, File f2) {
@@ -739,88 +835,56 @@ public class GpsMainActivity extends Activity implements
 				final Dialog dialog = new Dialog(this);
 				dialog.setTitle(R.string.sharing_pick_file);
 				dialog.setContentView(R.layout.filelist);
-				ListView thelist = (ListView) dialog
+				
+				
+				
+				final ListView thelist = (ListView) dialog
 						.findViewById(R.id.listViewFiles);
-
+				thelist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 				thelist.setAdapter(new ArrayAdapter<String>(
 						getApplicationContext(),
 						android.R.layout.simple_list_item_multiple_choice,
 						files));
-				for (int i = 0; i < fileList.size(); i++) {
-					System.out.println(fileList.get(i));
-				}
+				
+				Button buttonOk = (Button)dialog.findViewById(R.id.buttonSelectFileOk);
+				buttonOk.setOnClickListener(new OnClickListener(){
+					
+					public void onClick(View v) {
 
-				thelist.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> av, View v,
-							int index, long arg) {
-
+						SparseBooleanArray selectedItems = thelist.getCheckedItemPositions();
+						ArrayList<String> list = new ArrayList<String>();
+						for(int i=0;i<files.length;i++){
+							// If the item was selected
+							if(selectedItems.get(i)){
+								Utilities.LogDebug("File selected: "+files[i]);
+								list.add(files[i]);
+							}
+						}
+						
 						dialog.dismiss();
-						String chosenFileName = files[index];
-						String[] array = {chosenFileName};
-						startMapView(array);
+						
+						if(list.size()>0){
+							String[] array = new String[list.size()];
+							array = list.toArray(array);
+							startMapView(array);
+						}
+						
 					}
+					
 				});
+				
+				Button buttonCancel = (Button)dialog.findViewById(R.id.buttonSelectFileCancel);
+				buttonCancel.setOnClickListener(new View.OnClickListener(){
 
-				// Button okButton =
-				// (Button)findViewById(R.id.fileListOkButton);
-				//
-				// // final long[] ids = thelist.getCheckedItemIds();
-				// okButton.setOnClickListener(new OnClickListener(){
-				//
-				// public void onClick(View v) {
-				// // TODO Auto-generated method stub
-				// // for(int i=0;i<ids.length;i++){
-				// // System.out.println(fileList.get((int) ids[i]));
-				// // }
-				// }
-				//
-				// });
+					public void onClick(View v) {
+						// Nothing to do
+						dialog.dismiss();
+					}
+					
+				});
+				
+				
 
-				// thelist.setonsetOnItemClickListener(new OnItemClickListener()
-				// {
-				//
-				// public void onItemClick(AdapterView<?> av, View v,
-				// int[] index, long arg) {
-				// dialog.dismiss();
-				// String chosenFileName = files[index];
-				//
-				// final Intent intent = new Intent(GpsMainActivity.this,
-				// GoogleMapsViewActivity.class);
-				//
-				// // intent.setType("text/plain");
-				// intent.setType("*/*");
-				//
-				// if (chosenFileName.equalsIgnoreCase(locationOnly)) {
-				// intent.setType("text/plain");
-				// }
-				//
-				// intent.putExtra(Intent.EXTRA_SUBJECT,
-				// getString(R.string.sharing_mylocation));
-
-				// if (Session.hasValidLocation()) {
-				// String bodyText = getString(
-				// R.string.sharing_googlemaps_link, String
-				// .valueOf(Session
-				// .getCurrentLatitude()),
-				// String.valueOf(Session
-				// .getCurrentLongitude()));
-				// intent.putExtra(Intent.EXTRA_TEXT, bodyText);
-				// intent.putExtra("sms_body", bodyText);
-				// }
-
-				// if (chosenFileName.length() > 0
-				// && !chosenFileName
-				// .equalsIgnoreCase(locationOnly)) {
-				// intent.putExtra(Intent.EXTRA_STREAM, Uri
-				// .fromFile(new File(gpxFolder,
-				// chosenFileName)));
-				// }
-				//
-				// startActivity(Intent.createChooser(intent,
-				// getString(R.string.sharing_via)));
-				//
-				// }
-				// });
 				dialog.show();
 			} else {
 				Utilities.MsgBox(getString(R.string.sorry),

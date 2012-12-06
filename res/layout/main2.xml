@@ -41,19 +41,15 @@
                 android:background="#333333" >
 
                 <TextView
+                    android:textStyle="bold" 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text="@string/txt_user"
                     android:textSize="17sp" />
-
-                <EditText
-                    android:id="@+id/userComponent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" >
-
-                </EditText>
+               <TextView android:id="@+id/txtUser" android:gravity="left"
+                          android:padding="3dip" android:textColor="#e8a317"
+                          android:textStyle="bold" android:textSize="18sp"/>
             </TableRow>
         </TableLayout>
 

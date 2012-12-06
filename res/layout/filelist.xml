@@ -3,9 +3,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="wrap_content" android:layout_height="wrap_content"
 	android:orientation="vertical">
-	<ListView android:id="@+id/listViewFiles" android:divider="#ffffff"
-		android:dividerHeight="1dp" android:footerDividersEnabled="true"
-		android:headerDividersEnabled="true" android:gravity="center"
-		android:choiceMode="singleChoice" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+
+	<ListView
+	    android:id="@+id/listViewFiles"
+	    android:layout_width="319dp"
+	    android:layout_height="446dp"
+	    android:choiceMode="multipleChoice"
+	    android:divider="#ffffff"
+	    android:dividerHeight="1dp"
+	    android:footerDividersEnabled="true"
+	    android:gravity="center"
+	    android:headerDividersEnabled="true" />
+
+	<TableLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:stretchColumns="2" >
+
+	    <TableRow
+	        android:id="@+id/tableRow1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <Button
+	            android:id="@+id/buttonSelectFileCancel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@android:string/cancel" />
+
+	        <Button
+	            android:id="@+id/buttonSelectFileOk"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@android:string/ok" />
+
+	    </TableRow>
+	</TableLayout>
+
 </LinearLayout>

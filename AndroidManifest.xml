@@ -59,6 +59,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name="org.achartengine.GraphicalActivity" />
         <activity
             android:name="com.dropbox.client2.android.AuthActivity"
             android:configChanges="orientation|keyboard"
@@ -159,7 +160,7 @@
         <receiver android:name="com.mendhak.gpslogger.senders.AlarmReceiver" />
 
         <activity
-            android:name=".GoogleMapsViewActivity"
+            android:name="com.mendhak.gpslogger.GoogleMapsViewActivity"
             android:label="@string/title_activity_google_maps_view" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -175,6 +176,24 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.mendhak.gpslogger.sn.oauth.AuthenticationActivity"
+            android:label="@string/title_activity_authentication" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+           
+        <!-- Add this filter -->
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="simontest-android-app" />
+        </intent-filter>
+            
         </activity>
     </application>
 

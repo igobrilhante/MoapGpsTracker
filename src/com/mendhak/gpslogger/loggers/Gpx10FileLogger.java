@@ -39,10 +39,12 @@ class Gpx10FileLogger implements ILogger
     private final boolean addNewTrackSegment;
     private final int satelliteCount;
     protected final String name = "GPX";
+    private String user;
 
-    Gpx10FileLogger(File gpxFile, boolean useSatelliteTime, boolean addNewTrackSegment, int satelliteCount)
+    Gpx10FileLogger(String user,File gpxFile, boolean useSatelliteTime, boolean addNewTrackSegment, int satelliteCount)
     {
         this.gpxFile = gpxFile;
+        this.user = user;
         this.useSatelliteTime = useSatelliteTime;
         this.addNewTrackSegment = addNewTrackSegment;
         this.satelliteCount = satelliteCount;
@@ -64,7 +66,7 @@ class Gpx10FileLogger implements ILogger
 
         String dateTimeString = Utilities.GetIsoDateTime(now);
 
-        Gpx10WriteHandler writeHandler = new Gpx10WriteHandler(dateTimeString, gpxFile, loc, addNewTrackSegment, satelliteCount);
+        Gpx10WriteHandler writeHandler = new Gpx10WriteHandler(user,dateTimeString, gpxFile, loc, addNewTrackSegment, satelliteCount);
         Utilities.LogDebug(String.format("There are currently %s tasks waiting on the GPX10 EXECUTOR.", EXECUTOR.getQueue().size()));
         EXECUTOR.execute(writeHandler);
     }
@@ -280,7 +282,7 @@ class Gpx10AnnotateHandler implements Runnable
             waypoint.append("<speed>").append(String.valueOf(loc.getSpeed())).append("</speed>");
         }
 
-        waypoint.append("<"+descriptionName+">").append(description).append("</"+descriptionName+">");
+        waypoint.append("<").append(descriptionName).append(">").append(description).append("</").append(descriptionName).append(">");
 
         waypoint.append("<src>").append(loc.getProvider()).append("</src>");
 
@@ -301,10 +303,12 @@ class Gpx10WriteHandler implements Runnable
     private File gpxFile = null;
     private boolean addNewTrackSegment;
     private int satelliteCount;
+    private String user;
 
-    public Gpx10WriteHandler(String dateTimeString, File gpxFile, Location loc, boolean addNewTrackSegment, int satelliteCount)
+    public Gpx10WriteHandler(String user,String dateTimeString, File gpxFile, Location loc, boolean addNewTrackSegment, int satelliteCount)
     {
         this.dateTimeString = dateTimeString;
+        this.user = user;
         this.addNewTrackSegment = addNewTrackSegment;
         this.gpxFile = gpxFile;
         this.loc = loc;
@@ -334,6 +338,7 @@ class Gpx10WriteHandler implements Runnable
                     initialXml.append("xmlns=\"http://www.topografix.com/GPX/1/0\" ");
                     initialXml.append("xsi:schemaLocation=\"http://www.topografix.com/GPX/1/0 ");
                     initialXml.append("http://www.topografix.com/GPX/1/0/gpx.xsd\">");
+                    initialXml.append("<user>").append(user).append("</user>");
                     initialXml.append("<time>").append(dateTimeString).append("</time>").append("<bounds />").append("<trk></trk></gpx>");
                     initialOutput.write(initialXml.toString().getBytes());
                     initialOutput.flush();
