@@ -293,12 +293,21 @@
     <string name="menu_open">Open</string>
     <string name="menu_comment">Comment</string>
     <string name="menu_activity">Activity</string>
-    <string name="txt_user">User</string>
+    <string name="txt_user">User:</string>
     <string name="txt_chart">Chart</string>
     <string name="txt_stats">Stats</string>
     <string name="menu_changeuser">Change User</string>
     <string name="txtUser"></string>
     <string name="title_activity_authentication">AuthenticationActivity</string>
     <string name="txt_login">Login</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_activity_web_view">ActivityWebView</string>
+    <string name="title_activity_oauth">OauthActivity</string>
+    <string name="title_activity_fscheckin">FSCheckinActivity</string>
+    <string name="no_address_info_found">No address info</string>
+    <string name="menu_checkin">Check-in</string>
+    <string name="txt_meters">meters</string>
+    <string name="suc_login">Successfull log-in</string>
+    <string name="log_server">Log to server</string>
 
 </resources>

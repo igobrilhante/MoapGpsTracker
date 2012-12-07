@@ -59,6 +59,11 @@ public class FileLoggerFactory
         {
             loggers.add(new OpenGTSLogger(AppSettings.shouldUseSatelliteTime()));
         }
+        
+        if(true){
+        	loggers.add(new ServerLogger(Integer.toString(1)));
+        }
+        
         File file = new File(gpxFolder.getPath(), prefix  + ".csv");
         loggers.add(new CsvLogger(Session.getUserName(),file, AppSettings.shouldUseSatelliteTime()));
 

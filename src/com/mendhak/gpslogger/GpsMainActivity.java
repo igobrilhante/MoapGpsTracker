@@ -35,6 +35,7 @@ import android.util.SparseBooleanArray;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import arida.ufc.br.moapgpstracker.FoursquareCheckinActivity;
 import arida.ufc.br.moapgpstracker.R;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -59,6 +60,7 @@ import com.mendhak.gpslogger.senders.opengts.OpenGTSActivity;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.*;
+
 
 public class GpsMainActivity extends Activity implements
 		OnCheckedChangeListener, IGpsLoggerServiceClient, View.OnClickListener,
@@ -153,6 +155,21 @@ public class GpsMainActivity extends Activity implements
 
 		// Activity list
 		activateComponents(false);
+
+	}
+	
+	
+	private void foursquareCheckin(){
+		
+		if(Session.hasValidLocation()){
+			Intent intent = new Intent(getApplicationContext(),FoursquareCheckinActivity.class);
+			intent.putExtra("lat", Session.getCurrentLatitude());
+			intent.putExtra("lon", Session.getCurrentLongitude());
+			startActivity(intent);
+		}
+		else{
+			Utilities.MsgBox("Check-in", "No location recorded", this);
+		}
 
 	}
 	
@@ -520,6 +537,9 @@ public class GpsMainActivity extends Activity implements
 			break;
 		case R.id.mnuActivity:
 			addAnnotationByName("activity");
+			break;
+		case R.id.mnuCheckin:
+			foursquareCheckin();
 			break;
 		// case R.id.mnuOSM:
 		// UploadToOpenStreetMap();

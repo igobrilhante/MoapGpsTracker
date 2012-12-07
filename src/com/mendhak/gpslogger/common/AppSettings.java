@@ -56,7 +56,16 @@ public class AppSettings extends Application
     private static String openGTSServerCommunicationMethod;
     private static String openGTSServerPath;
     private static String openGTSDeviceId;
-
+    
+    private static boolean shouldLogToServer;
+    
+    public static boolean shouldLogToServer(){
+    	return shouldLogToServer;
+    }
+    
+    public void setLogToServer(boolean enable){
+    	AppSettings.shouldLogToServer = enable;
+    }
 
     /**
      * @return the useImperial

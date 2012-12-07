@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 import arida.ufc.br.moapgpstracker.R;
 import org.w3c.dom.Document;
 
@@ -746,6 +747,10 @@ public class Utilities
         //Unknown mime type
         return "application/octet-stream";
 
+    }
+    
+    public static Toast toastMensage(Context context,String msg){
+    	 return Toast.makeText(context, msg, Toast.LENGTH_LONG);
     }
 
 }

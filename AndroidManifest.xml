@@ -115,7 +115,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".shortcuts.ShortcutCreate"
+            android:name="arida.ufc.br.moapgpstracker.shortcuts.ShortcutCreate"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
@@ -124,14 +124,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".shortcuts.ShortcutStart"
+            android:name="arida.ufc.br.moapgpstracker.shortcuts.ShortcutStart"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".shortcuts.ShortcutStop"
+            android:name="arida.ufc.br.moapgpstracker.shortcuts.ShortcutStop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -162,38 +162,24 @@
         <activity
             android:name="com.mendhak.gpslogger.GoogleMapsViewActivity"
             android:label="@string/title_activity_google_maps_view" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name=".LoggerListActivity"
+            android:name="arida.ufc.br.moapgpstracker.LoggerListActivity"
             android:label="@string/title_activity_logger_list" >
+        </activity>
+        <activity
+            android:name="arida.ufc.br.moapgpstracker.OauthActivity"
+            android:label="@string/title_activity_oauth" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="org.moap.gpstracker.oauth.ActivityWebView" />
         <activity
-            android:name="com.mendhak.gpslogger.sn.oauth.AuthenticationActivity"
-            android:label="@string/title_activity_authentication" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-           
-        <!-- Add this filter -->
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="simontest-android-app" />
-        </intent-filter>
-            
+            android:name="arida.ufc.br.moapgpstracker.FoursquareCheckinActivity"
+            android:label="@string/title_activity_fscheckin" >
         </activity>
     </application>
 

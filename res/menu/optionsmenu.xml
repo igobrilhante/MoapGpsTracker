@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/mnuSettings" android:title="@string/menu_settings"
-		android:icon="@android:drawable/ic_menu_preferences" />
+	
 
 	<item android:id="@+id/mnOpen" android:title="@string/menu_open" android:icon="@android:drawable/ic_input_get"></item>
 	<item android:id="@+id/mnuComment" android:title="@string/menu_comment" android:icon="@android:drawable/ic_input_add"></item>
     <item android:id="@+id/mnuActivity" android:title="@string/menu_activity" android:icon="@android:drawable/ic_input_add"></item>
-	
+	<item android:id="@+id/mnuCheckin" android:title="@string/menu_checkin" android:icon="@drawable/ic_checkin"></item>
 	<item android:id="@+id/mnuMapView" android:title="@string/menu_mapview" android:icon="@android:drawable/ic_menu_mapmode"></item>
 	<item android:id="@+id/mnuExit" android:title="@string/menu_exit" android:icon="@android:drawable/ic_menu_close_clear_cancel"/>
-	<item android:id="@+id/mnuChangeUser" android:title="@string/menu_changeuser" android:icon="@android:drawable/ic_input_add"></item>
+	<item android:id="@+id/mnuChangeUser" android:title="@string/menu_changeuser" android:icon="@drawable/ic_user"></item>
 	<item android:id="@+id/mnuAnnotate" android:title="@string/menu_annotate" android:icon="@android:drawable/ic_menu_edit" />
+	<item android:id="@+id/mnuSettings" android:title="@string/menu_settings"
+		android:icon="@android:drawable/ic_menu_preferences" />
     
 
 <!--     <item android:id="@+id/mnuShare" android:title="@string/menu_share" android:icon="@android:drawable/ic_menu_share"></item>
      -->
+	
   
 </menu>
