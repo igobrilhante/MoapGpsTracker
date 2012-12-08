@@ -1,14 +1,18 @@
 package org.moap.gpstracker.oauth;
 
+import com.mendhak.gpslogger.GpsMainActivity;
 import com.mendhak.gpslogger.common.Utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.graphics.Bitmap;
 import arida.ufc.br.moapgpstracker.R;
@@ -47,6 +51,13 @@ public class ActivityWebView extends Activity{
         this.sharedPrefs = this.getSharedPreferences("moap", Context.MODE_PRIVATE);
         webview.setWebViewClient(new WebViewClient() {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            	
+            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
+            	pb.setEnabled(true);
+            	pb.setIndeterminate(true);
+            	pb.setVisibility(View.VISIBLE);
+            	
+            	
                 String fragment = "#access_token=";
                 int start = url.indexOf(fragment);
                 if (start > -1) {
@@ -57,9 +68,17 @@ public class ActivityWebView extends Activity{
                     sharedPrefs.edit().putString("user.foursquare.token", accessToken).commit();
                 	
 //                    Toast.makeText(ActivityWebView.this, "Token: " + accessToken, Toast.LENGTH_SHORT).show();
-                    Utilities.toastMensage(ActivityWebView.this, getResources().getText(R.string.suc_login).toString()).show();
-                    finish();
+                    Toast.makeText(ActivityWebView.this, getResources().getText(R.string.suc_login).toString(), Toast.LENGTH_SHORT).show();
+//                    Utilities.toastMensage(ActivityWebView.this, getResources().getText(R.string.suc_login).toString()).show();
+                    Intent intent = new Intent(getApplicationContext(),GpsMainActivity.class);
+                    startActivity(intent);
                 }
+            }
+            public void onPageFinished(WebView view, String url){
+            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
+            	pb.setEnabled(false);
+            	pb.setIndeterminate(false);
+            	pb.setVisibility(View.INVISIBLE);
             }
         });
         webview.loadUrl(url);

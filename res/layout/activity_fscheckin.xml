@@ -1,34 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkin_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:paddingTop="10px" >
+    android:paddingTop="10dp" >
 
-    <TextView
-        android:id="@+id/intro"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#333333"
-        android:text="Pick a place"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-<View
-    android:layout_width="fill_parent"
-    android:layout_height="3dp"
-    android:background="@android:color/darker_gray"/>
 
-    <ListView
-        android:id="@id/android:list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:drawSelectorOnTop="true" />
 
-    <TextView
-        android:id="@id/android:empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="empty" />
+        <TextView
+            android:id="@+id/intro"
+            android:layout_toRightOf="@+id/checkin_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#333333"
+            android:text="Pick a place"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-</LinearLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:id="@+id/checkin_view"
+            android:layout_height="3dp"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/intro"
+             />
+
+        <ListView
+            android:id="@id/android:list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:drawSelectorOnTop="true"
+            android:layout_below="@+id/checkin_view" />
+        
+<!--         <TextView
+            android:id="@id/android:empty"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="empty" 
+            android:layout_below="@+id/checkin_view" /> -->
+
+        <ProgressBar
+            android:id="@+id/checking_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/android:list"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="103dp"
+            android:visibility="invisible" />
+
+</RelativeLayout>

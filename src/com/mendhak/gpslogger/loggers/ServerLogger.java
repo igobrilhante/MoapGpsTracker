@@ -5,7 +5,16 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.mendhak.gpslogger.common.OpenGTSClient;
+import com.mendhak.gpslogger.common.Utilities;
+
+import android.content.Context;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,7 +22,7 @@ import android.util.Log;
 
 public class ServerLogger implements ILogger {
 
-	private final String url = "http://sw4.us/ufc/?";
+	private final String url = "http://sw4.us/ufc/";
 	private String id;
 	private final String TAG = "ServerLogger";
 
@@ -24,23 +33,45 @@ public class ServerLogger implements ILogger {
 	public void write(Location loc) throws Exception {
 		// TODO Auto-generated method stub
 		String preparedUrl = prepareURL(this.id, loc.getLatitude(), loc.getLongitude());
-		Log.d(TAG, "Logging to "+preparedUrl);
+		AsyncHttpClient httpClient = new AsyncHttpClient();
 		
-			new AsyncTask<String, Void, Void>(){
-
-				@Override
-				protected Void doInBackground(String... params) {
-					try {
-					HttpGet httpGet = new HttpGet(params[0]);
-					HttpClient client = new DefaultHttpClient();
-					client.execute(httpGet);
-					} catch (Exception e) {
-						Log.e(TAG, "Cannot write", e);
+		RequestParams p = new RequestParams();
+		p.put("q", "1");
+		p.put("id", id);
+		p.put("lat", Double.toString(loc.getLatitude()) );
+		p.put("long", Double.toString(loc.getLongitude()) );
+		
+		try{
+			Log.d(TAG,"Logging to "+url+p.toString());
+			httpClient.get(url,p,new AsyncHttpResponseHandler() {
+			     @Override
+			     public void onSuccess(String response) {
+			    	 try {
+						JSONObject resp = new JSONObject(response);
+						int code = resp.getJSONObject("meta").getInt("code");
+						if(code==200){
+							Log.d(TAG,"Sucess logging to "+url +" "+code);
+						}
+						else{
+							Log.d(TAG,"Failure logging to "+url +" "+code);
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					return null;
-				}
+			     }
+			     @Override
+			     public void onFailure(Throwable e, String response) {
+			    	 Log.d(TAG,"Failure logging to "+url +" "+response);
+			     }
+			 });
+		}
+		catch(Exception e){
+			Log.e(TAG, "Could not log to "+preparedUrl,e);
+		}
+		
 				
-			}.execute(preparedUrl);
+				
 
 	}
 
@@ -48,6 +79,8 @@ public class ServerLogger implements ILogger {
 		// TODO Auto-generated method stub
 
 	}
+	
+
 
 	public void annotate(String name, String description, Location loc)
 			throws Exception {
@@ -61,7 +94,7 @@ public class ServerLogger implements ILogger {
 	}
 
 	private String prepareURL(String id, double lat, double lon) {
-		return url + "q=1&" + "id=" + id + "&lat=" + lat + "&lon=" + lon;
+		return url + "q=1&" + "id=" + id + "&lat=" + lat + "&long=" + lon;
 	}
 
 }

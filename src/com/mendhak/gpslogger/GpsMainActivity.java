@@ -31,11 +31,13 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import arida.ufc.br.moapgpstracker.FoursquareCheckinActivity;
+import arida.ufc.br.moapgpstracker.HistoryActivity;
 import arida.ufc.br.moapgpstracker.R;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -128,19 +130,19 @@ public class GpsMainActivity extends Activity implements
 		setContentView(R.layout.main2);
 		
 		// Shared preferences
-		this.sharedPrefs =  this.getSharedPreferences("moap", Context.MODE_PRIVATE);
-		
-		String user = this.sharedPrefs.getString("moap.user", "");
+//		this.sharedPrefs =  this.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
+//		
+//		String user = this.sharedPrefs.getString(MOAP_USER, "");
 		
 		/**
 		 * Set user name for logging
 		 */
 		if(!hasUsername()){
-			setUsername();
+			changeUser();
 		}
 		else{
 			TextView tvUser = (TextView)findViewById(R.id.txtUser);
-			tvUser.setText(user);
+			tvUser.setText(Session.getUserName());
 		}
 
 		
@@ -153,22 +155,29 @@ public class GpsMainActivity extends Activity implements
 
 		StartAndBindService();
 
-		// Activity list
-		activateComponents(false);
 
 	}
 	
 	
 	private void foursquareCheckin(){
 		
+		if(Session.getAchievedAnnotations().contains("checkin")){
+			Utilities.MsgBox(getString(R.string.not_yet),
+					"Cannot check in until next point",
+					GetActivity());
+			return;
+		}
+		
 		if(Session.hasValidLocation()){
 			Intent intent = new Intent(getApplicationContext(),FoursquareCheckinActivity.class);
-			intent.putExtra("lat", Session.getCurrentLatitude());
-			intent.putExtra("lon", Session.getCurrentLongitude());
+			intent.putExtra("loc", Session.getCurrentLocationInfo());
+			
+//			intent.putExtra("lat", Session.getCurrentLatitude());
+//			intent.putExtra("lon", Session.getCurrentLongitude());
 			startActivity(intent);
 		}
 		else{
-			Utilities.MsgBox("Check-in", "No location recorded", this);
+			Utilities.MsgBox(getString(R.string.not_yet), "No location recorded", this);
 		}
 
 	}
@@ -179,20 +188,29 @@ public class GpsMainActivity extends Activity implements
 	
 	private boolean hasUsername(){
 		// Shared preferences
-		this.sharedPrefs =  this.getSharedPreferences("moap", Context.MODE_PRIVATE);
+		this.sharedPrefs =  this.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
 		
-		String user = this.sharedPrefs.getString("moap.user", "");
-		if(user==null || user.equals("")){
+		String user = this.sharedPrefs.getString(MOAP_USER, "");
+		Log.e("GpsMainActivity", "User: "+user);
+		if(!this.sharedPrefs.contains(MOAP_USER) || user == ""){
 			return false;
 		}
 		Session.setUserName(user);
+		this.sharedPrefs.edit().putString(MOAP_USER, user).commit();
 		return true;
 	}
 	
 	/*
 	 * Set username into shared preferences
 	 */
-	private void setUsername(){
+	private void changeUser(){
+		
+		Log.d("GpsMainActivity", "change user");
+		// Clear preferences
+		this.sharedPrefs =  this.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
+		this.sharedPrefs.edit().clear().commit();
+		// Shared preferences
+//		this.sharedPrefs =  
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(
 				GpsMainActivity.this);
@@ -202,6 +220,7 @@ public class GpsMainActivity extends Activity implements
 
 		// Set an EditText view to get user input
 		final EditText input = new EditText(getApplicationContext());
+		input.setPressed(true);
 
 		alert.setView(input);
 		alert.setPositiveButton(R.string.ok,
@@ -228,39 +247,24 @@ public class GpsMainActivity extends Activity implements
 		
 	}
 
-	private void activateComponents(boolean enable) {
-		// Activity list
-		Utilities.LogDebug("Activate Components: " + enable);
-		// Spinner spinner = (Spinner) findViewById(R.id.activityListComponent);
-		// spinner.setEnabled(enable);
-
-		// EditText commentComponent = (EditText)
-		// findViewById(R.id.commentComponent);
-		// commentComponent.setEnabled(enable);
-	}
-
-	private void activateUser(boolean enable) {
-		// Utilities.LogDebug("Activate User and Goal: " + enable);
-//		EditText user = (EditText) findViewById(R.id.userComponent);
-//		user.setEnabled(enable);
-
-		// EditText goal = (EditText) findViewById(R.id.goalComponent);
-		// goal.setEnabled(enable);
-	}
 
 	@Override
 	protected void onStart() {
 		Utilities.LogDebug("GpsMainActivity.onStart");
 		super.onStart();
-		if(hasUsername()) StartAndBindService(); else setUsername();
+		StartAndBindService();
+		
+
 	}
 
 	@Override
 	protected void onResume() {
 		Utilities.LogDebug("GpsMainactivity.onResume");
 		super.onResume();
-		// GetPreferences();
-		if(hasUsername()) StartAndBindService(); else setUsername();
+		 GetPreferences();
+		StartAndBindService(); 
+
+		
 		
 	}
 
@@ -324,7 +328,7 @@ public class GpsMainActivity extends Activity implements
 		// EditText goal = (EditText) findViewById(R.id.goalComponent);
 		Utilities.LogDebug("User: " + txtUser.getText().toString().trim());
 		// Utilities.LogDebug("Goa: " + goal);
-		if (!txtUser.getText().toString().trim().equals("")) {
+		if (hasUsername()) {
 			
 			if (isChecked) {
 				GetPreferences();
@@ -332,12 +336,10 @@ public class GpsMainActivity extends Activity implements
 				loggingService.SetupAutoSendTimers();
 
 				loggingService.StartLogging();
-				activateComponents(true);
-				activateUser(false);
+
 			} else {
 				// Activity list
-				activateComponents(false);
-				activateUser(true);
+
 				SetSinglePointButtonEnabled(true);
 				loggingService.StopLogging();
 			}
@@ -349,7 +351,24 @@ public class GpsMainActivity extends Activity implements
 			ToggleButton toggleButton = (ToggleButton) findViewById(R.id.buttonOnOff);
 			toggleButton.setChecked(false);
 			
-			setUsername();
+			changeUser();
+			
+			if (hasUsername()) {
+				
+				if (isChecked) {
+					GetPreferences();
+					SetSinglePointButtonEnabled(false);
+					loggingService.SetupAutoSendTimers();
+
+					loggingService.StartLogging();
+
+				} else {
+					// Activity list
+
+					SetSinglePointButtonEnabled(true);
+					loggingService.StopLogging();
+				}
+			}
 
 			
 		}
@@ -362,7 +381,6 @@ public class GpsMainActivity extends Activity implements
 	public void onClick(View view) {
 		Utilities.LogDebug("GpsMainActivity.onClick");
 
-		activateComponents(true);
 		if (!Session.isStarted()) {
 			SetMainButtonEnabled(false);
 			loggingService.StartLogging();
@@ -541,6 +559,9 @@ public class GpsMainActivity extends Activity implements
 		case R.id.mnuCheckin:
 			foursquareCheckin();
 			break;
+		case R.id.mnuHistory:
+			Intent history = new Intent(getApplicationContext(),HistoryActivity.class);
+			startActivity(history);
 		// case R.id.mnuOSM:
 		// UploadToOpenStreetMap();
 		// break;
@@ -566,7 +587,7 @@ public class GpsMainActivity extends Activity implements
 		// EmailNow();
 		// break;
 		case R.id.mnuChangeUser:
-			setUsername();
+			changeUser();
 			break;
 		case R.id.mnuExit:
 			loggingService.StopLogging();
@@ -984,7 +1005,7 @@ public class GpsMainActivity extends Activity implements
 	private void addAnnotationByName(final String annotationName) {
 		Utilities.LogDebug("GpsMainActivity.AnnotationByName");
 
-		if (!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml()) {
+		if (!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml() && !AppSettings.shouldLogToPlainText()) {
 			return;
 		}
 
@@ -1105,8 +1126,10 @@ public class GpsMainActivity extends Activity implements
 				SetStatus(getString(R.string.description_added));
 				Session.addAchievedAnnodation(name);
 				Session.setAllowDescription(false);
+				Toast.makeText(GpsMainActivity.this,"Annotate "+name, Toast.LENGTH_SHORT).show();
 			} catch (Exception e) {
 				SetStatus(getString(R.string.could_not_write_to_file));
+				Toast.makeText(GpsMainActivity.this,getString(R.string.could_not_write_to_file), Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

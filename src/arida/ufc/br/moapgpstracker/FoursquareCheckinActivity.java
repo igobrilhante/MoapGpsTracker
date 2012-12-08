@@ -10,6 +10,7 @@ import org.moap.gpstracker.oauth.FoursquareCredentials;
 
 import com.mendhak.gpslogger.GpsMainActivity;
 import com.mendhak.gpslogger.common.Utilities;
+import com.mendhak.gpslogger.loggers.LoggerService;
 
 import oauth.signpost.OAuth;
 import fi.foyt.foursquare.api.FoursquareApi;
@@ -19,6 +20,7 @@ import fi.foyt.foursquare.api.entities.Checkin;
 import fi.foyt.foursquare.api.entities.CompactVenue;
 import fi.foyt.foursquare.api.entities.VenuesSearchResult;
 import fi.foyt.foursquare.api.io.DefaultIOHandler;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,9 +37,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import arida.ufc.br.moapgpstracker.R;
 import arida.ufc.br.moapgpstracker.R.layout;
 import arida.ufc.br.moapgpstracker.R.menu;
@@ -47,6 +51,7 @@ public class FoursquareCheckinActivity extends ListActivity {
 	private FoursquareApi foursquareApi;
 	private SharedPreferences prefs;
 	private List<CompactVenue> veneusMap;
+	private final String TAG = "FoursquareCheckinActivity";
 	private final String PLACE_ID_FIELD = "";
 	private final String PLACE_LAT_FIELD = "";
 	private final String PLACE_LON_FIELD = "";
@@ -54,6 +59,7 @@ public class FoursquareCheckinActivity extends ListActivity {
 	private final String PLACE_ADDRESS_FIELD = "";
 	private double lat = 0.0;
 	private double lon = 0.0;
+	private Location location = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +68,13 @@ public class FoursquareCheckinActivity extends ListActivity {
 		Log.d(this.getClass().getSimpleName(), "On create");
 		// Get Lat and Lon
 		if (getIntent().getExtras() != null) {
-			this.lat = getIntent().getExtras().getDouble("lat");
-			this.lon = getIntent().getExtras().getDouble("lon");
+			this.location = (Location) getIntent().getExtras().get("loc");
+			if(this.location!=null){
+
+				this.lat =	this.location.getLatitude();
+				this.lon =  this.location.getLongitude();
+			}
+			
 //			this.lat = -3.73;
 //			this.lon = -38.5;
 			veneusMap = new ArrayList<CompactVenue>();
@@ -78,20 +89,18 @@ public class FoursquareCheckinActivity extends ListActivity {
 
 								 CompactVenue venue = veneusMap.get((int) id);
 								 checkin(venue);
+								 
+								 Bundle extras = new Bundle();
+								 extras.putInt("option", 1);
+								 extras.putString("annotation_key","checkin");
+								 extras.putString("annotation_value", venue.getName() );
+								 extras.putParcelable("loc", location);
+								 
+								 Intent service = new Intent(FoursquareCheckinActivity.this,LoggerService.class);
+								 service.putExtras(extras);
+								 startService(service);
+								 
 								 finish();
-//								 Intent intent = new
-//								 Intent(getApplicationContext(),GpsMainActivity.class);
-//								 intent.putExtra(PLACE_ID_FIELD,
-//								 venue.getId());
-//								 intent.putExtra(PLACE_LAT_FIELD,
-//								 venue.getLocation().getLat());
-//								 intent.putExtra(PLACE_LON_FIELD,
-//								 venue.getLocation().getLng());
-//								 intent.putExtra(PLACE_NAME_FIELD,
-//								 venue.getName());
-//								 intent.putExtra(PLACE_ADDRESS_FIELD,
-//								 venue.getLocation().getAddress());
-//								 startActivity(intent);
 							}
 
 						});
@@ -109,29 +118,54 @@ public class FoursquareCheckinActivity extends ListActivity {
 		return true;
 	}
 	
-	private void checkin(CompactVenue venue){
+	private void checkin(final CompactVenue venue){
 		
-		new AsyncTask<CompactVenue, Void, Void>(){
+		AsyncTask<CompactVenue, Void, Boolean> task = new AsyncTask<CompactVenue, Void, Boolean>(){
 
 			@Override
-			protected Void doInBackground(CompactVenue... params) {
+			protected Boolean doInBackground(CompactVenue... params) {
 				CompactVenue venue = params[0];
 				getFoursquareApi();
 				try {
 					Result<Checkin> result = getFoursquareApi().checkinsAdd(venue.getId(), null, null, null, null, null, null, null);
-					if(result.getMeta().getCode()==200){
-						Utilities.toastMensage(FoursquareCheckinActivity.this, "Check-in achieved at "+venue.getName() ).show();
-					}
+					 return true;
 				} catch (FoursquareApiException e) {
 					// TODO Auto-generated catch block
-					Utilities.toastMensage(FoursquareCheckinActivity.this, "Check-in was not achieved").show();
 					Log.e(FoursquareCheckinActivity.class.getSimpleName(), "CHECKIN", e);
 				}
 				
-				return null;
+				return false;
 			}
 			
-		}.execute(venue);
+			@Override
+		    protected void onPreExecute(){
+				super.onPreExecute();
+				ProgressBar pb = (ProgressBar)findViewById(R.id.checking_progress_bar);
+				pb.setEnabled(true);
+				pb.setVisibility(View.VISIBLE);
+				pb.setIndeterminate(true);
+				Log.d("FoursquareCheckinActivity", "onPreExecute");
+				
+			}
+			
+			@Override
+			protected void onPostExecute(Boolean result){
+				ProgressBar pb = (ProgressBar)findViewById(R.id.checking_progress_bar);
+				pb.setEnabled(false);
+				pb.setVisibility(View.INVISIBLE);
+				pb.setIndeterminate(false);
+				Log.d("FoursquareCheckinActivity", "onPosExecute");
+				if(result){
+					Toast.makeText(FoursquareCheckinActivity.this,"Check-in  achieved at "+venue.getName(), Toast.LENGTH_LONG).show();
+				}
+				else{
+					Toast.makeText(FoursquareCheckinActivity.this,"Check-in was not achieved", Toast.LENGTH_LONG).show();
+				}
+			}
+			
+		};
+		
+		task.execute(venue);
 		
 		
 	}

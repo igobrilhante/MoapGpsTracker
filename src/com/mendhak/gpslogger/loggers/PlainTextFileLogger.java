@@ -40,9 +40,11 @@ public class PlainTextFileLogger implements ILogger
     private File file;
     private boolean useSatelliteTime;
     protected final String name = "TXT";
+    private final String user;
 
-    public PlainTextFileLogger(File file, boolean useSatelliteTime)
+    public PlainTextFileLogger(String user,File file, boolean useSatelliteTime)
     {
+    	this.user = user;
         this.file = file;
         this.useSatelliteTime = useSatelliteTime;
     }
@@ -56,7 +58,8 @@ public class PlainTextFileLogger implements ILogger
 
             FileOutputStream writer = new FileOutputStream(file, true);
             BufferedOutputStream output = new BufferedOutputStream(writer);
-            String header = "time,lat,lon,elevation,accuracy,bearing,speed\n";
+            String header = "";
+            header = "id,time,lat,lon,elevation,accuracy,bearing,speed,comment,activity,checkin\n";
             output.write(header.getBytes());
             output.flush();
             output.close();
@@ -78,13 +81,18 @@ public class PlainTextFileLogger implements ILogger
 
         String dateTimeString = Utilities.GetIsoDateTime(now);
 
-        String outputString = String.format("%s,%f,%f,%f,%f,%f,%f\n", dateTimeString,
+        String outputString = String.format("%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s\n",
+        		user,
+        		dateTimeString,
                 loc.getLatitude(),
                 loc.getLongitude(),
                 loc.getAltitude(),
                 loc.getAccuracy(),
                 loc.getBearing(),
-                loc.getSpeed());
+                loc.getSpeed(),
+                "",
+                "",
+                "");
 
         output.write(outputString.getBytes());
         output.flush();
@@ -106,7 +114,84 @@ public class PlainTextFileLogger implements ILogger
 
 	public void annotate(String name, String description, Location loc)
 			throws Exception {
-		// TODO Auto-generated method stub
+		if (!file.exists())
+        {
+            file.createNewFile();
+
+            FileOutputStream writer = new FileOutputStream(file, true);
+            BufferedOutputStream output = new BufferedOutputStream(writer);
+            String header = "id,time,lat,lon,elevation,accuracy,bearing,speed,comment,activity,checkin\n";
+            output.write(header.getBytes());
+            output.flush();
+            output.close();
+        }
+
+        FileOutputStream writer = new FileOutputStream(file, true);
+        BufferedOutputStream output = new BufferedOutputStream(writer);
+
+        Date now;
+
+        if (useSatelliteTime)
+        {
+            now = new Date(loc.getTime());
+        }
+        else
+        {
+            now = new Date();
+        }
+
+        String dateTimeString = Utilities.GetIsoDateTime(now);
+        String outputString = String.format("%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s\n", user, dateTimeString,
+                loc.getLatitude(),
+                loc.getLongitude(),
+                loc.getAltitude(),
+                loc.getAccuracy(),
+                loc.getBearing(),
+                loc.getSpeed(),
+                "",
+                "",
+                "");
+        if(name.equalsIgnoreCase("comment")){
+        outputString = String.format("%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s\n", user, dateTimeString,
+                loc.getLatitude(),
+                loc.getLongitude(),
+                loc.getAltitude(),
+                loc.getAccuracy(),
+                loc.getBearing(),
+                loc.getSpeed(),
+                description,
+                "",
+                "");
+        }
+        if(name.equalsIgnoreCase("activity")){
+        outputString = String.format("%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s\n", user, dateTimeString,
+                loc.getLatitude(),
+                loc.getLongitude(),
+                loc.getAltitude(),
+                loc.getAccuracy(),
+                loc.getBearing(),
+                loc.getSpeed(),
+                "",
+                description,
+                "");
+        }
+        if(name.equalsIgnoreCase("checkin")){
+        outputString = String.format("%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s\n", user, dateTimeString,
+                loc.getLatitude(),
+                loc.getLongitude(),
+                loc.getAltitude(),
+                loc.getAccuracy(),
+                loc.getBearing(),
+                loc.getSpeed(),
+                "",
+                "",
+                description);
+        }
+        
+
+        output.write(outputString.getBytes());
+        output.flush();
+        output.close();
 		
 	}
 

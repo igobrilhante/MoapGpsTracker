@@ -749,8 +749,5 @@ public class Utilities
 
     }
     
-    public static Toast toastMensage(Context context,String msg){
-    	 return Toast.makeText(context, msg, Toast.LENGTH_LONG);
-    }
 
 }

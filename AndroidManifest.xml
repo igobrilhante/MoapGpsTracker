@@ -37,6 +37,11 @@
                 <action android:name="com.mendhak.gpslogger.GpsLoggingService" />
             </intent-filter>
         </service>
+        <service android:name="com.mendhak.gpslogger.loggers.LoggerService" >
+            <intent-filter>
+                <action android:name="com.mendhak.gpslogger.loggers.LoggerService" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name="com.mendhak.gpslogger.GpsMainActivity"
@@ -180,6 +185,10 @@
         <activity
             android:name="arida.ufc.br.moapgpstracker.FoursquareCheckinActivity"
             android:label="@string/title_activity_fscheckin" >
+        </activity>
+        <activity
+            android:name="arida.ufc.br.moapgpstracker.HistoryActivity"
+            android:label="@string/title_activity_history" >
         </activity>
     </application>
 

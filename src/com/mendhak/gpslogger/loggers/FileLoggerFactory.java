@@ -18,6 +18,8 @@
 package com.mendhak.gpslogger.loggers;
 
 import android.os.Environment;
+
+import com.mendhak.gpslogger.GpsMainActivity;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.Session;
 
@@ -52,7 +54,7 @@ public class FileLoggerFactory
         if (AppSettings.shouldLogToPlainText())
         {
             File file = new File(gpxFolder.getPath(), prefix  + ".txt");
-            loggers.add(new PlainTextFileLogger(file, AppSettings.shouldUseSatelliteTime()));
+            loggers.add(new PlainTextFileLogger(Session.getUserName(),file, AppSettings.shouldUseSatelliteTime()));
         }
 
         if (AppSettings.shouldLogToOpenGTS())
@@ -64,8 +66,8 @@ public class FileLoggerFactory
         	loggers.add(new ServerLogger(Integer.toString(1)));
         }
         
-        File file = new File(gpxFolder.getPath(), prefix  + ".csv");
-        loggers.add(new CsvLogger(Session.getUserName(),file, AppSettings.shouldUseSatelliteTime()));
+//        File file = new File(gpxFolder.getPath(), prefix  + ".csv");
+//        loggers.add(new CsvLogger(Session.getUserName(),file, AppSettings.shouldUseSatelliteTime()));
 
         return loggers;
     }

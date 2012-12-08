@@ -168,7 +168,7 @@ class Gpx10AnnotateHandler implements Runnable
             
             String wpt = "";
             
-            if(name==null){
+            if(name==null || name==""){
             	wpt = GetWaypointXml(loc, dateTimeString, description);
             	}
             else{
