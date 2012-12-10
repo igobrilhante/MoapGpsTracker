@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+        <com.google.android.maps.MapView
+            android:id="@+id/history_map_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:apiKey="0QaTD7rXhP_07GOIl2gkqjrrb_gFaC8ul6SAcYA"
+            android:clickable="true"
+            android:enabled="true" />
+
+        <ProgressBar
+            android:id="@+id/history_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="243dp"
+            android:visibility="invisible" />
+
+</RelativeLayout>

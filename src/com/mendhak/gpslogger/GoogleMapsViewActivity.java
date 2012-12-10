@@ -10,10 +10,10 @@ import org.moap.chart.SpeedOverTimeChart;
 import org.moap.overlays.CustomOverlay;
 import org.moap.overlays.GoogleMapsOverlay;
 
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -29,7 +29,6 @@ import arida.ufc.br.moap.importer.spi.ITrajectoryImporter;
 import arida.ufc.br.moapgpstracker.R;
 
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
