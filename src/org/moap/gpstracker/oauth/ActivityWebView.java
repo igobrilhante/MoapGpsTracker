@@ -52,10 +52,10 @@ public class ActivityWebView extends Activity{
         webview.setWebViewClient(new WebViewClient() {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
             	
-            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
-            	pb.setEnabled(true);
-            	pb.setIndeterminate(true);
-            	pb.setVisibility(View.VISIBLE);
+//            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
+//            	pb.setEnabled(true);
+//            	pb.setIndeterminate(true);
+//            	pb.setVisibility(View.VISIBLE);
             	
             	
                 String fragment = "#access_token=";
@@ -70,15 +70,16 @@ public class ActivityWebView extends Activity{
 //                    Toast.makeText(ActivityWebView.this, "Token: " + accessToken, Toast.LENGTH_SHORT).show();
                     Toast.makeText(ActivityWebView.this, getResources().getText(R.string.suc_login).toString(), Toast.LENGTH_SHORT).show();
 //                    Utilities.toastMensage(ActivityWebView.this, getResources().getText(R.string.suc_login).toString()).show();
-                    Intent intent = new Intent(getApplicationContext(),GpsMainActivity.class);
-                    startActivity(intent);
+
                 }
             }
             public void onPageFinished(WebView view, String url){
-            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
-            	pb.setEnabled(false);
-            	pb.setIndeterminate(false);
-            	pb.setVisibility(View.INVISIBLE);
+//            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
+//            	pb.setEnabled(false);
+//            	pb.setIndeterminate(false);
+//            	pb.setVisibility(View.INVISIBLE);
+//                Intent intent = new Intent(getApplicationContext(),GpsMainActivity.class);
+//                startActivity(intent);
             }
         });
         webview.loadUrl(url);

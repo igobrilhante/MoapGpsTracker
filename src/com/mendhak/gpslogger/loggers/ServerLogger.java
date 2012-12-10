@@ -1,24 +1,14 @@
 package com.mendhak.gpslogger.loggers;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.location.Location;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.mendhak.gpslogger.common.OpenGTSClient;
-import com.mendhak.gpslogger.common.Utilities;
-
-import android.content.Context;
-import android.location.Location;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
 
 public class ServerLogger implements ILogger {
 
@@ -57,7 +47,7 @@ public class ServerLogger implements ILogger {
 						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Log.d(TAG,"Error parsing JSON: "+url);
 					}
 			     }
 			     @Override

@@ -19,30 +19,54 @@
 
 package com.mendhak.gpslogger;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.ListIterator;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
-import android.content.*;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 import arida.ufc.br.moapgpstracker.FoursquareCheckinActivity;
 import arida.ufc.br.moapgpstracker.HistoryActivity;
 import arida.ufc.br.moapgpstracker.R;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.Session;
@@ -56,13 +80,8 @@ import com.mendhak.gpslogger.senders.dropbox.DropBoxHelper;
 import com.mendhak.gpslogger.senders.email.AutoEmailActivity;
 import com.mendhak.gpslogger.senders.gdocs.GDocsHelper;
 import com.mendhak.gpslogger.senders.gdocs.GDocsSettingsActivity;
-import com.mendhak.gpslogger.senders.osm.OSMHelper;
 import com.mendhak.gpslogger.senders.opengts.OpenGTSActivity;
-
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.*;
-
+import com.mendhak.gpslogger.senders.osm.OSMHelper;
 
 public class GpsMainActivity extends Activity implements
 		OnCheckedChangeListener, IGpsLoggerServiceClient, View.OnClickListener,
@@ -128,90 +147,122 @@ public class GpsMainActivity extends Activity implements
 		Utilities.LogInfo("GPSLogger started");
 
 		setContentView(R.layout.main2);
-		
-		// Shared preferences
-//		this.sharedPrefs =  this.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
-//		
-//		String user = this.sharedPrefs.getString(MOAP_USER, "");
-		
+
+		initialize();
+
 		/**
 		 * Set user name for logging
 		 */
-		if(!hasUsername()){
-			changeUser();
-		}
-		else{
-			TextView tvUser = (TextView)findViewById(R.id.txtUser);
-			tvUser.setText(Session.getUserName());
-		}
+		// if(!hasUsername()){
+		// changeUser();
+		// }
+		// else{
+		TextView tvUser = (TextView) findViewById(R.id.txtUser);
+		tvUser.setText(Session.getUserName());
+		// }
 
-		
-		
-//		addPreferencesFromResource(R.xml.initialsettings);
-//		PreferenceManager.setDefaultValues(this, R.xml.initialsettings, false);
+		// addPreferencesFromResource(R.xml.initialsettings);
+		// PreferenceManager.setDefaultValues(this, R.xml.initialsettings,
+		// false);
 
 		// Moved to onResume to update the list of loggers
 		GetPreferences();
 
 		StartAndBindService();
 
-
 	}
-	
-	
-	private void foursquareCheckin(){
-		
-		if(Session.getAchievedAnnotations().contains("checkin")){
+
+	private void foursquareCheckin() {
+
+		if (Session.getAchievedAnnotations().contains("checkin")) {
 			Utilities.MsgBox(getString(R.string.not_yet),
-					"Cannot check in until next point",
-					GetActivity());
+					"Cannot check in until next point", GetActivity());
 			return;
 		}
-		
-		if(Session.hasValidLocation()){
-			Intent intent = new Intent(getApplicationContext(),FoursquareCheckinActivity.class);
+
+		if (Session.hasValidLocation()) {
+			Intent intent = new Intent(getApplicationContext(),
+					FoursquareCheckinActivity.class);
 			intent.putExtra("loc", Session.getCurrentLocationInfo());
-			
-//			intent.putExtra("lat", Session.getCurrentLatitude());
-//			intent.putExtra("lon", Session.getCurrentLongitude());
+
+			// intent.putExtra("lat", Session.getCurrentLatitude());
+			// intent.putExtra("lon", Session.getCurrentLongitude());
 			startActivity(intent);
-		}
-		else{
-			Utilities.MsgBox(getString(R.string.not_yet), "No location recorded", this);
+		} else {
+			Utilities.MsgBox(getString(R.string.not_yet),
+					"No location recorded", this);
 		}
 
 	}
-	
+
 	/*
 	 * Has username
 	 */
-	
-	private boolean hasUsername(){
+
+	private boolean hasUsername() {
 		// Shared preferences
-		this.sharedPrefs =  this.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
-		
+		this.sharedPrefs = this
+				.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
+
 		String user = this.sharedPrefs.getString(MOAP_USER, "");
-		Log.e("GpsMainActivity", "User: "+user);
-		if(!this.sharedPrefs.contains(MOAP_USER) || user == ""){
+		Log.e("GpsMainActivity", "hasUsername - User: " + user);
+		if (user == "") {
 			return false;
 		}
-		Session.setUserName(user);
-		this.sharedPrefs.edit().putString(MOAP_USER, user).commit();
+
+		// this.sharedPrefs.edit().putString(MOAP_USER, user).commit();
 		return true;
 	}
-	
+
+	private void initialize() {
+		
+		if(!hasUsername()){
+			changeUser();
+		}
+		else{
+			this.sharedPrefs = this.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
+
+			String user = this.sharedPrefs.getString(MOAP_USER, "");
+			update(user);
+		}
+
+	}
+
+	private void update(String user) {
+		Log.e("GpsMainActivity", "Update user "+user);
+		TextView tvUser = (TextView) findViewById(R.id.txtUser);
+		tvUser.setText(user);
+		Session.setUserName(user);
+	}
+
+	private void clearData() {
+		Log.d("GpsMainActivity", "Clear data");
+		WebView webview = (WebView) findViewById(R.id.webview);
+		if (webview != null) {
+			webview.clearCache(true);
+			webview.clearFormData();
+			webview.clearHistory();
+		}
+
+		this.sharedPrefs = this
+				.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
+		if (this.sharedPrefs != null) {
+			this.sharedPrefs.edit().clear().commit();
+		}
+	}
+
 	/*
 	 * Set username into shared preferences
 	 */
-	private void changeUser(){
-		
+	private void changeUser() {
+
 		Log.d("GpsMainActivity", "change user");
 		// Clear preferences
-		this.sharedPrefs =  this.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
-		this.sharedPrefs.edit().clear().commit();
+		clearData();
+
 		// Shared preferences
-//		this.sharedPrefs =  
-		
+		// this.sharedPrefs =
+
 		AlertDialog.Builder alert = new AlertDialog.Builder(
 				GpsMainActivity.this);
 
@@ -229,11 +280,18 @@ public class GpsMainActivity extends Activity implements
 
 						final String user = Utilities.CleanDescription(input
 								.getText().toString());
-						sharedPrefs.edit().putString(MOAP_USER, user).commit();
-						TextView tvUser = (TextView) findViewById(R.id.txtUser);
-						tvUser.setText(user);
-						Session.setUserName(user);
-						
+
+						sharedPrefs = getSharedPreferences(MOAP,
+								Context.MODE_PRIVATE);
+
+						SharedPreferences.Editor editor = sharedPrefs.edit();
+
+						editor.putString(MOAP_USER, user);
+
+						editor.commit();
+
+						update(user);
+
 					}
 				});
 		alert.setNegativeButton(R.string.cancel,
@@ -244,16 +302,14 @@ public class GpsMainActivity extends Activity implements
 				});
 
 		alert.show();
-		
-	}
 
+	}
 
 	@Override
 	protected void onStart() {
 		Utilities.LogDebug("GpsMainActivity.onStart");
 		super.onStart();
 		StartAndBindService();
-		
 
 	}
 
@@ -261,11 +317,9 @@ public class GpsMainActivity extends Activity implements
 	protected void onResume() {
 		Utilities.LogDebug("GpsMainactivity.onResume");
 		super.onResume();
-		 GetPreferences();
-		StartAndBindService(); 
+		GetPreferences();
+		StartAndBindService();
 
-		
-		
 	}
 
 	/**
@@ -308,6 +362,7 @@ public class GpsMainActivity extends Activity implements
 		Utilities.LogDebug("GpsMainActivity.onPause");
 		StopAndUnbindServiceIfRequired();
 		super.onPause();
+		GetPreferences();
 	}
 
 	@Override
@@ -324,53 +379,27 @@ public class GpsMainActivity extends Activity implements
 	 */
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		Utilities.LogDebug("GpsMainActivity.onCheckedChanged");
-		TextView txtUser = (TextView)findViewById(R.id.txtUser);
+		TextView txtUser = (TextView) findViewById(R.id.txtUser);
 		// EditText goal = (EditText) findViewById(R.id.goalComponent);
-		Utilities.LogDebug("User: " + txtUser.getText().toString().trim());
+//		Utilities.LogDebug("User: " + txtUser.getText().toString().trim());
 		// Utilities.LogDebug("Goa: " + goal);
-		if (hasUsername()) {
-			
-			if (isChecked) {
+
+		if (isChecked) {
+			if (hasUsername()) {
 				GetPreferences();
 				SetSinglePointButtonEnabled(false);
 				loggingService.SetupAutoSendTimers();
 
 				loggingService.StartLogging();
-
 			} else {
-				// Activity list
-
-				SetSinglePointButtonEnabled(true);
-				loggingService.StopLogging();
-			}
-		}
-		/**
-		 * User and Goal EditText are empty
-		 */
-		else {
-			ToggleButton toggleButton = (ToggleButton) findViewById(R.id.buttonOnOff);
-			toggleButton.setChecked(false);
-			
-			changeUser();
-			
-			if (hasUsername()) {
-				
-				if (isChecked) {
-					GetPreferences();
-					SetSinglePointButtonEnabled(false);
-					loggingService.SetupAutoSendTimers();
-
-					loggingService.StartLogging();
-
-				} else {
-					// Activity list
-
-					SetSinglePointButtonEnabled(true);
-					loggingService.StopLogging();
-				}
+				changeUser();
 			}
 
-			
+		} else {
+			// Activity list
+
+			SetSinglePointButtonEnabled(true);
+			loggingService.StopLogging();
 		}
 
 	}
@@ -560,32 +589,34 @@ public class GpsMainActivity extends Activity implements
 			foursquareCheckin();
 			break;
 		case R.id.mnuHistory:
-			Intent history = new Intent(getApplicationContext(),HistoryActivity.class);
+			Intent history = new Intent(GpsMainActivity.this,
+					HistoryActivity.class);
 			startActivity(history);
-		// case R.id.mnuOSM:
-		// UploadToOpenStreetMap();
-		// break;
-		// case R.id.mnuDropBox:
-		// UploadToDropBox();
-		// break;
-		// case R.id.mnuGDocs:
-		// UploadToGoogleDocs();
-		// break;
-		// case R.id.mnuOpenGTS:
-		// SendToOpenGTS();
-		// break;
-		// case R.id.mnuEmail:
-		// SelectAndEmailFile();
-		// break;
-		// case R.id.mnuAnnotate:
-		// Annotate();
-		// break;
-//		case R.id.mnuShare:
-//			Share();
-//			break;
-		// case R.id.mnuEmailnow:
-		// EmailNow();
-		// break;
+			break;
+			// case R.id.mnuOSM:
+			// UploadToOpenStreetMap();
+			// break;
+			// case R.id.mnuDropBox:
+			// UploadToDropBox();
+			// break;
+			// case R.id.mnuGDocs:
+			// UploadToGoogleDocs();
+			// break;
+			// case R.id.mnuOpenGTS:
+			// SendToOpenGTS();
+			// break;
+			// case R.id.mnuEmail:
+			// SelectAndEmailFile();
+			// break;
+			// case R.id.mnuAnnotate:
+			// Annotate();
+			// break;
+			// case R.id.mnuShare:
+			// Share();
+			// break;
+			// case R.id.mnuEmailnow:
+			// EmailNow();
+			// break;
 		case R.id.mnuChangeUser:
 			changeUser();
 			break;
@@ -723,7 +754,7 @@ public class GpsMainActivity extends Activity implements
 		}
 
 	}
-	
+
 	private void SelectAndEmailFile() {
 		Utilities.LogDebug("GpsMainActivity.SelectAndEmailFile");
 
@@ -841,18 +872,19 @@ public class GpsMainActivity extends Activity implements
 					.toString());
 			if (gpxFolder.exists()) {
 				Utilities.LogDebug("GPX Folder exists");
-				File[] enumeratedFiles = gpxFolder.listFiles(new FilenameFilter() {
-					
-					public boolean accept(File dir, String filename) {
-						// TODO Auto-generated method stub
-						
-						if(filename.endsWith(".txt")){
-							return true;
-						}
-						
-						return false;
-					}
-				});
+				File[] enumeratedFiles = gpxFolder
+						.listFiles(new FilenameFilter() {
+
+							public boolean accept(File dir, String filename) {
+								// TODO Auto-generated method stub
+
+								if (filename.endsWith(".txt")) {
+									return true;
+								}
+
+								return false;
+							}
+						});
 
 				Arrays.sort(enumeratedFiles, new Comparator<File>() {
 					public int compare(File f1, File f2) {
@@ -876,9 +908,7 @@ public class GpsMainActivity extends Activity implements
 				final Dialog dialog = new Dialog(this);
 				dialog.setTitle(R.string.sharing_pick_file);
 				dialog.setContentView(R.layout.filelist);
-				
-				
-				
+
 				final ListView thelist = (ListView) dialog
 						.findViewById(R.id.listViewFiles);
 				thelist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -886,45 +916,47 @@ public class GpsMainActivity extends Activity implements
 						getApplicationContext(),
 						android.R.layout.simple_list_item_multiple_choice,
 						files));
-				
-				Button buttonOk = (Button)dialog.findViewById(R.id.buttonSelectFileOk);
-				buttonOk.setOnClickListener(new OnClickListener(){
-					
+
+				Button buttonOk = (Button) dialog
+						.findViewById(R.id.buttonSelectFileOk);
+				buttonOk.setOnClickListener(new OnClickListener() {
+
 					public void onClick(View v) {
 
-						SparseBooleanArray selectedItems = thelist.getCheckedItemPositions();
+						SparseBooleanArray selectedItems = thelist
+								.getCheckedItemPositions();
 						ArrayList<String> list = new ArrayList<String>();
-						for(int i=0;i<files.length;i++){
+						for (int i = 0; i < files.length; i++) {
 							// If the item was selected
-							if(selectedItems.get(i)){
-								Utilities.LogDebug("File selected: "+files[i]);
+							if (selectedItems.get(i)) {
+								Utilities
+										.LogDebug("File selected: " + files[i]);
 								list.add(files[i]);
 							}
 						}
-						
+
 						dialog.dismiss();
-						
-						if(list.size()>0){
+
+						if (list.size() > 0) {
 							String[] array = new String[list.size()];
 							array = list.toArray(array);
 							startMapView(array);
 						}
-						
+
 					}
-					
+
 				});
-				
-				Button buttonCancel = (Button)dialog.findViewById(R.id.buttonSelectFileCancel);
-				buttonCancel.setOnClickListener(new View.OnClickListener(){
+
+				Button buttonCancel = (Button) dialog
+						.findViewById(R.id.buttonSelectFileCancel);
+				buttonCancel.setOnClickListener(new View.OnClickListener() {
 
 					public void onClick(View v) {
 						// Nothing to do
 						dialog.dismiss();
 					}
-					
+
 				});
-				
-				
 
 				dialog.show();
 			} else {
@@ -1005,7 +1037,8 @@ public class GpsMainActivity extends Activity implements
 	private void addAnnotationByName(final String annotationName) {
 		Utilities.LogDebug("GpsMainActivity.AnnotationByName");
 
-		if (!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml() && !AppSettings.shouldLogToPlainText()) {
+		if (!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml()
+				&& !AppSettings.shouldLogToPlainText()) {
 			return;
 		}
 
@@ -1126,10 +1159,13 @@ public class GpsMainActivity extends Activity implements
 				SetStatus(getString(R.string.description_added));
 				Session.addAchievedAnnodation(name);
 				Session.setAllowDescription(false);
-				Toast.makeText(GpsMainActivity.this,"Annotate "+name, Toast.LENGTH_SHORT).show();
+				Toast.makeText(GpsMainActivity.this, "Annotate " + name,
+						Toast.LENGTH_SHORT).show();
 			} catch (Exception e) {
 				SetStatus(getString(R.string.could_not_write_to_file));
-				Toast.makeText(GpsMainActivity.this,getString(R.string.could_not_write_to_file), Toast.LENGTH_SHORT).show();
+				Toast.makeText(GpsMainActivity.this,
+						getString(R.string.could_not_write_to_file),
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
