@@ -50,6 +50,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -237,12 +238,6 @@ public class GpsMainActivity extends Activity implements
 
 	private void clearData() {
 		Log.d("GpsMainActivity", "Clear data");
-		WebView webview = (WebView) findViewById(R.id.webview);
-		if (webview != null) {
-			webview.clearCache(true);
-			webview.clearFormData();
-			webview.clearHistory();
-		}
 
 		this.sharedPrefs = this
 				.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
@@ -272,6 +267,7 @@ public class GpsMainActivity extends Activity implements
 		// Set an EditText view to get user input
 		final EditText input = new EditText(getApplicationContext());
 		input.setPressed(true);
+		
 
 		alert.setView(input);
 		alert.setPositiveButton(R.string.ok,

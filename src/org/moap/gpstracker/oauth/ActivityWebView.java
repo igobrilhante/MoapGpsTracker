@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -40,6 +41,7 @@ public class ActivityWebView extends Activity{
                 "?client_id=" + FoursquareCredentials.CLIENT_ID + 
                 "&response_type=token" + 
                 "&redirect_uri=" + FoursquareCredentials.CLIENT_CALLBACK;
+        Log.d(TAG, url);
         
         // If authentication works, we'll get redirected to a url with a pattern like:  
         //
@@ -47,17 +49,27 @@ public class ActivityWebView extends Activity{
         //
         // We can override onPageStarted() in the web client and grab the token out.
         WebView webview = (WebView)findViewById(R.id.webview);
+        
+        clearData();
+        
         webview.getSettings().setJavaScriptEnabled(true);
         this.sharedPrefs = this.getSharedPreferences("moap", Context.MODE_PRIVATE);
         webview.setWebViewClient(new WebViewClient() {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
             	
-//            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
-//            	pb.setEnabled(true);
-//            	pb.setIndeterminate(true);
-//            	pb.setVisibility(View.VISIBLE);
+            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
+            	pb.setEnabled(true);
+            	pb.setIndeterminate(true);
+            	pb.setVisibility(View.VISIBLE);
             	
             	
+
+            }
+            public void onPageFinished(WebView view, String url){
+            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
+            	pb.setEnabled(false);
+            	pb.setIndeterminate(false);
+            	pb.setVisibility(View.INVISIBLE);
                 String fragment = "#access_token=";
                 int start = url.indexOf(fragment);
                 if (start > -1) {
@@ -67,22 +79,36 @@ public class ActivityWebView extends Activity{
                     Log.v(TAG, "OAuth complete, token: [" + accessToken + "].");
                     sharedPrefs.edit().putString("user.foursquare.token", accessToken).commit();
                 	
-//                    Toast.makeText(ActivityWebView.this, "Token: " + accessToken, Toast.LENGTH_SHORT).show();
                     Toast.makeText(ActivityWebView.this, getResources().getText(R.string.suc_login).toString(), Toast.LENGTH_SHORT).show();
-//                    Utilities.toastMensage(ActivityWebView.this, getResources().getText(R.string.suc_login).toString()).show();
+                    
+                    Intent intent = new Intent(getApplicationContext(),GpsMainActivity.class);
+                    startActivity(intent);
 
                 }
+
+                
             }
-            public void onPageFinished(WebView view, String url){
-//            	ProgressBar pb = (ProgressBar)findViewById(R.id.web_progress_bar);
-//            	pb.setEnabled(false);
-//            	pb.setIndeterminate(false);
-//            	pb.setVisibility(View.INVISIBLE);
-//                Intent intent = new Intent(getApplicationContext(),GpsMainActivity.class);
-//                startActivity(intent);
+            
+            public void onReceivedLoginRequest(WebView view, String realm, String account, String args){
+            	Log.d(TAG,"on received login request");
             }
+            
+            
         });
         webview.loadUrl(url);
         
+
+        
     }
+    
+	private void clearData() {
+		Log.d(TAG, "Clear data");
+		WebView webview = (WebView) findViewById(R.id.webview);
+		if (webview != null) {
+			webview.clearCache(true);
+			webview.clearFormData();
+			webview.clearHistory();
+			CookieManager.getInstance().removeAllCookie();
+		}
+	}
 }
