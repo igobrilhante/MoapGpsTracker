@@ -469,7 +469,7 @@ public class GpsLoggingService extends Service implements IActionListener
         PendingIntent pending = PendingIntent.getActivity(getApplicationContext(), 0, contentIntent,
                 android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        Notification nfc = new Notification(R.drawable.ic_moap_gps_tracker, null, System.currentTimeMillis());
+        Notification nfc = new Notification(R.drawable.ic_launcher_3, null, System.currentTimeMillis());
         nfc.flags |= Notification.FLAG_ONGOING_EVENT;
 
         NumberFormat nf = new DecimalFormat("###.######");

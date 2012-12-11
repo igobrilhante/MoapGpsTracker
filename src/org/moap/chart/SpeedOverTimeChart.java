@@ -65,8 +65,8 @@ public class SpeedOverTimeChart {
 							previousPoint.getLongitude()) / 1000;
 					
 					Duration duration = new Duration(previousTime, time);
-					Utilities
-							.LogDebug(String.format("%s - %s", previousTime, time));
+//					Utilities
+//							.LogDebug(String.format("%s - %s", previousTime, time));
 					double mili = duration.getMillis();
 					double hours = mili / (1000 * 60 * 60); // convert mili to hours
 

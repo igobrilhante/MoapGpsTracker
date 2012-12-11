@@ -50,7 +50,9 @@ public class HistoryActivity extends MapActivity {
 	// List of points provided by the remote Server in response to a request
 	private JSONArray list_of_points;
 	private final DateTimeFormatter fmt = DateTimeFormat
-			.forPattern("yyyy-M-d'+'H:m:s");
+			.forPattern("yyyy-M-d");
+	private final DateTimeFormatter fmt_receive = DateTimeFormat
+			.forPattern("yyyy-M-d H:m:s");
 	private final String TAG = "HistoryActivity";
 
 	@Override
@@ -60,7 +62,7 @@ public class HistoryActivity extends MapActivity {
 
 		DateTime today = new DateTime();
 
-		getHistory(today.minusDays(5), today);
+		getHistory(today, today.plusDays(1));
 	}
 
 	@Override
@@ -76,6 +78,8 @@ public class HistoryActivity extends MapActivity {
 		
 		if(model!=null){
 			Log.w(TAG, "onCharMenu");
+			
+			System.out.println("Trajs: "+model.getTrajectoryCount());
 			
 			SpeedOverTimeChart analysis = new SpeedOverTimeChart(model);
 	
@@ -247,7 +251,6 @@ public class HistoryActivity extends MapActivity {
 		
 		TrajectoryModelImpl<LatLonPoint, DateTime> model = null;
 		if (this.list_of_points != null) {
-			
 			int size = this.list_of_points.length();
 
 			model = new TrajectoryModelImpl<LatLonPoint, DateTime>();
@@ -256,9 +259,9 @@ public class HistoryActivity extends MapActivity {
 					Session.getUserName());
 
 			Trajectory<LatLonPoint, DateTime> traj = model.factory()
-					.newTrajectory(mo + "_0", mo);
+					.newTrajectory(mo.getId() + "_0", mo);
 			try {
-				Log.d(TAG, "Loading trajectory model from JSON");
+				Log.d(TAG, " GetTrajectoryHistory - Loading trajectory model from JSON");
 				for (int i = 0; i < size; i++) {
 					JSONObject object = this.list_of_points.getJSONObject(i);
 					double lat = object.getDouble("lat");
@@ -266,13 +269,13 @@ public class HistoryActivity extends MapActivity {
 					LatLonPoint point = new LatLonPoint(lon, lat);
 					String date = object.getString("time");
 
-					DateTime datetime = fmt.parseDateTime(date);
+					DateTime datetime = fmt_receive.parseDateTime(date);
 					traj.addPoint(point, datetime);
 
 				}
 				model.addTrajectory(traj);
 			} catch (Exception e) {
-
+				Log.e(TAG, "Error to get trajectory history", e);
 			}
 
 		}
@@ -321,6 +324,17 @@ public class HistoryActivity extends MapActivity {
 				}
 
 				overlayList.add(overlay);
+				
+				// Set zoom
+				JSONObject object = this.list_of_points.getJSONObject(size-1);
+				double lat = object.getDouble("lat");
+				double lon = object.getDouble("long");
+
+				GeoPoint geoPoint = new GeoPoint(
+						Utilities.convertCoordinates(lat),
+						Utilities.convertCoordinates(lon));
+				
+				mapView.getController().setCenter(geoPoint);
 			} catch (Exception e) {
 
 			}

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MoapGpsTracker</string>
-    <string name="settings_screen_name">GPSLogger Settings</string>
+    <string name="app_name">GpsTracker</string>
+    <string name="settings_screen_name">Settings</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="could_not_write_to_file">Could not write to file</string>
@@ -32,7 +32,7 @@
     <string name="btn_start_logging">Start Logging</string>
     <string name="btn_stop_logging">Stop Logging</string>
     <string name="gpslogger_still_running">GPSLogger is still running.</string>
-    <string name="moapgpstracker_still_running">MoapGpsTracker is still running.</string>
+    <string name="moapgpstracker_still_running">GpsTracker is still running.</string>
     <string name="summary_loggingto">Logging to:</string>
     <string name="summary_loggingto_screen">screen only</string>
     <string name="summary_freq_every">Frequency:</string>
@@ -40,7 +40,7 @@
     <string name="summary_dist">Distance:</string>
     <string name="summary_dist_regardless">maximum</string>
     <string name="summary_current_filename">File:</string>
-    <string name="summary_current_filename_format">%s (in your MoapGpsTracker folder)</string>
+    <string name="summary_current_filename_format">%s (in your GpsTracker folder)</string>
     <string name="sharing_location_only">Location only</string>
     <string name="sharing_pick_file">Pick a file to share</string>
     <string name="sharing_mylocation">My location</string>
@@ -113,11 +113,11 @@
     <!-- Settings -->
     <string name="pref_logging_title">Logging details</string>
     <string name="log_gpx_title">Log to GPX</string>
-    <string name="log_gpx_summary">Creates a GPX file in the GPSLogger folder on the SD card.</string>
+    <string name="log_gpx_summary">Creates a GPX file in the GPSTracker folder on the SD card.</string>
     <string name="log_kml_title">Log to KML</string>
-    <string name="log_kml_summary">Creates a KML file in the GPSLogger folder on the SD card.</string>
+    <string name="log_kml_summary">Creates a KML file in the GPSTracker folder on the SD card.</string>
     <string name="log_plain_text_title">Log to Plain Text</string>
-    <string name="log_plain_text_summary">Creates a plain text file in the GPSLogger folder on the SD card.</string>
+    <string name="log_plain_text_summary">Creates a plain text file in the GPSTracker folder on the SD card.</string>
     <string name="satellite_time_title">Use satellite time</string>
     <string name="satellite_time_summary">Use satellite time instead of local phone time, it\'s more accurate.</string>
     <string name="new_file_creation_title">New file creation</string>
@@ -217,7 +217,7 @@
     <string name="btn_single_point">Log a single point</string>
     <string name="dropbox_setup_title">Dropbox</string>
     <string name="dropbox_setup_summary">Authorize with Dropbox to allow file uploads</string>
-    <string name="dropbox_authorize_description">To use Dropbox features, you will need to authorize GPSLogger to upload
+    <string name="dropbox_authorize_description">To use Dropbox features, you will need to authorize GPSTracker to upload
         files to your account.</string>
     <string name="dropbox_authorize">Authorize</string>
     <string name="dropbox_unauthorize">Remove Authorization</string>
@@ -289,8 +289,8 @@
     <string name="moap_info">Info</string>
     <string name="menu_mapview">Map View</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_google_maps_view">GoogleMapsViewActivity</string>
-    <string name="title_activity_logger_list">LoggerListActivity</string>
+    <string name="title_activity_google_maps_view">GpsTracker - Google Maps</string>
+    <string name="title_activity_logger_list">GpsTracker - List</string>
     <string name="menu_open">Open</string>
     <string name="menu_comment">Comment</string>
     <string name="menu_activity">Activity</string>
@@ -302,14 +302,14 @@
     <string name="title_activity_authentication">AuthenticationActivity</string>
     <string name="txt_login">Login</string>
     <string name="title_activity_test">TestActivity</string>
-    <string name="title_activity_activity_web_view">ActivityWebView</string>
+    <string name="title_activity_activity_web_view">GpsTracker - WebView</string>
     <string name="title_activity_oauth">OauthActivity</string>
-    <string name="title_activity_fscheckin">FSCheckinActivity</string>
+    <string name="title_activity_fscheckin">GpsTracker - Check-in</string>
     <string name="no_address_info_found">No address info</string>
     <string name="menu_checkin">Check-in</string>
     <string name="txt_meters">meters</string>
     <string name="suc_login">Successfull log-in</string>
     <string name="log_server">Log to server</string>
-    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_history">GpsTracker - History</string>
 
 </resources>

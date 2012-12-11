@@ -203,7 +203,7 @@ public class GoogleMapsViewActivity extends MapActivity {
 				
 				startActivity(intent);
 			} catch (Exception ex) {
-				Utilities.LogError("ERROR CHART", ex);
+				Log.e("GoogleMapsViewActivity","ERROR CHART", ex);
 			}
 
 		} else {
