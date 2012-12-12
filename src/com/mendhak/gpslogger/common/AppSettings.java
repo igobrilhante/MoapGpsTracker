@@ -63,7 +63,7 @@ public class AppSettings extends Application
     	return shouldLogToServer;
     }
     
-    public void setLogToServer(boolean enable){
+    public static void setLogToServer(boolean enable){
     	AppSettings.shouldLogToServer = enable;
     }
 

@@ -62,7 +62,7 @@ public class FileLoggerFactory
             loggers.add(new OpenGTSLogger(AppSettings.shouldUseSatelliteTime()));
         }
         
-        if(true){
+        if(AppSettings.shouldLogToServer()){
         	loggers.add(new ServerLogger(Integer.toString(1)));
         }
         

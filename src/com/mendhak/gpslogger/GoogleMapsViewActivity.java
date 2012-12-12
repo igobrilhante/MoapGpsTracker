@@ -133,9 +133,9 @@ public class GoogleMapsViewActivity extends MapActivity {
 						overlayList.add(googleMapsOverlay);
 						
 						// Add itemized overlay
-						if(custom_overlay.size() > 0){
-							overlayList.add(custom_overlay);
-						}
+//						if(custom_overlay.size() > 0){
+//							overlayList.add(custom_overlay);
+//						}
 
 					} else {
 						break;

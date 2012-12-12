@@ -5,14 +5,16 @@
     <CheckBoxPreference android:key="log_gpx"
                         android:title="@string/log_gpx_title" android:summary="@string/log_gpx_summary"/>
 
-    <CheckBoxPreference android:key="log_kml"
+<!--     <CheckBoxPreference android:key="log_kml"
                         android:summary="@string/log_kml_summary" android:title="@string/log_kml_title"/>
 
     <CheckBoxPreference android:key="log_opengts"
-                        android:summary="@string/log_opengts_summary" android:title="@string/log_opengts_title"/>
+                        android:summary="@string/log_opengts_summary" android:title="@string/log_opengts_title"/> -->
                         
     <CheckBoxPreference android:key="log_plain_text"
-                        android:summary="@string/log_plain_text_summary" android:title="@string/log_plain_text_title"/><CheckBoxPreference android:key="log_server" android:title="@string/log_server"/>
+                        android:summary="@string/log_plain_text_summary" android:title="@string/log_plain_text_title"/>
+    
+    <CheckBoxPreference android:key="log_server" android:title="@string/log_server"/>
 
     <PreferenceScreen android:title="@string/pref_logging_title"
                       android:summary="@string/pref_logging_summary">
@@ -70,7 +72,7 @@
                             android:key="debugtofile" android:defaultValue="false"/>
 
     </PreferenceScreen>
-    <PreferenceScreen android:key="autosend_preferencescreen" android:title="@string/pref_autosend_title" android:summary="@string/pref_autosend_summary">
+    <!-- <PreferenceScreen android:key="autosend_preferencescreen" android:title="@string/pref_autosend_title" android:summary="@string/pref_autosend_summary">
 
         <CheckBoxPreference android:key="autosend_enabled"
                             android:title="@string/autosend_enabled"
@@ -113,7 +115,7 @@
 
 
 
-    </PreferenceScreen>
+    </PreferenceScreen> -->
     
 
 

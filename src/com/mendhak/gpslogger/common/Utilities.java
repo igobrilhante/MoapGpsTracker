@@ -132,6 +132,8 @@ public class Utilities
         AppSettings.setLogToPlainText(prefs.getBoolean("log_plain_text", false));
 
         AppSettings.setLogToOpenGTS(prefs.getBoolean("log_opengts", false));
+        
+        AppSettings.setLogToServer(prefs.getBoolean("log_server", false));
 
         AppSettings.setShowInNotificationBar(prefs.getBoolean(
                 "show_notification", true));

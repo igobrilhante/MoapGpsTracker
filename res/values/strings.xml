@@ -18,7 +18,7 @@
     <string name="menu_annotate">Annotate</string>
     <string name="menu_share">Share</string>
     <string name="menu_exit">Exit</string>
-     <string name="menu_history">History</string>
+    <string name="menu_history">History</string>
 
     <!-- main form labels -->
     <string name="txt_latitude">Latitude:</string>
@@ -311,5 +311,7 @@
     <string name="suc_login">Successfull log-in</string>
     <string name="log_server">Log to server</string>
     <string name="title_activity_history">GpsTracker - History</string>
+    <string name="title_activity_map_box">MapBoxActivity</string>
+    <string name="title_activity_map_box_test">MapBoxTest</string>
 
 </resources>

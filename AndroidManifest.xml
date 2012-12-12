@@ -185,6 +185,15 @@
             android:name="arida.ufc.br.moapgpstracker.HistoryActivity"
             android:label="@string/title_activity_history" >
         </activity>
+        <activity
+            android:name="arida.ufc.br.moapgpstracker.MapBoxTest"
+            android:label="@string/title_activity_map_box_test" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
