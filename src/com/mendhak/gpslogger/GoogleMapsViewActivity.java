@@ -148,11 +148,15 @@ public class GoogleMapsViewActivity extends MapActivity {
 				mapView.invalidate();
 				
 				
+				
+				
 
 			}
 		} catch (Exception e) {
 			Utilities.LogError("GoogleMapsView.onCreate", e);
 		}
+		
+		this.model = null;
 	}
 
 	@Override
@@ -191,16 +195,19 @@ public class GoogleMapsViewActivity extends MapActivity {
 
 	private void onChartMenu() {
 		
-		SpeedOverTimeChart analysis = new SpeedOverTimeChart(this.model);
+		importData();
 		
-		XYMultipleSeriesDataset dataset = analysis.createDataset();
-		XYMultipleSeriesRenderer renderer = analysis.createRenderer();
+		SpeedOverTimeChart analysis = new SpeedOverTimeChart(model);
+		
+		final XYMultipleSeriesDataset dataset = analysis.createDataset();
+		final XYMultipleSeriesRenderer renderer = analysis.createRenderer();
 
 		if (dataset != null && renderer != null) {
 			try {
-				Intent intent = ChartFactory.getTimeChartIntent(this, dataset, renderer, "HH:mm");
-//				Intent intent = ChartFactory.getLineChartIntent(this, dataset,renderer);
-				
+				Log.d("GoogleMapsViewActivity", "Creating chart intent");
+				Intent intent = ChartFactory.getTimeChartIntent(this, dataset,
+						renderer, "HH:mm");
+
 				startActivity(intent);
 			} catch (Exception ex) {
 				Log.e("GoogleMapsViewActivity","ERROR CHART", ex);
@@ -208,6 +215,8 @@ public class GoogleMapsViewActivity extends MapActivity {
 
 		} else {
 			Utilities.LogDebug(String.format("Dataset - %s\nRenderer - ",
+					dataset.toString(), renderer.toString()));
+			Log.e("GoogleMapsViewActivity","ERROR CHART: "+String.format("Dataset - %s\nRenderer - ",
 					dataset.toString(), renderer.toString()));
 		}
 	}
@@ -227,7 +236,7 @@ public class GoogleMapsViewActivity extends MapActivity {
 		/*
 		 * Trajectory Model from Moap
 		 */
-		this.model = new TrajectoryModelImpl<LatLonPoint, DateTime>();
+		model = new TrajectoryModelImpl<LatLonPoint, DateTime>();
 		/*
 		 * Importer from CSV
 		 */

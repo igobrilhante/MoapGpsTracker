@@ -90,8 +90,6 @@ public class HistoryActivity extends MapActivity {
 				try {
 					Intent intent = ChartFactory.getTimeChartIntent(this, dataset,
 							renderer, "HH:mm");
-					// Intent intent = ChartFactory.getLineChartIntent(this,
-					// dataset,renderer);
 	
 					startActivity(intent);
 				} catch (Exception ex) {

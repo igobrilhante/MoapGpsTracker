@@ -154,22 +154,21 @@ public class GpsMainActivity extends Activity implements
 		/**
 		 * Set user name for logging
 		 */
-		// if(!hasUsername()){
-		// changeUser();
-		// }
-		// else{
-		TextView tvUser = (TextView) findViewById(R.id.txtUser);
-		tvUser.setText(Session.getUserName());
-		// }
+//		if (!hasUsername()) {
+//			changeUser();
+//		} else {
+//			TextView tvUser = (TextView) findViewById(R.id.txtUser);
+//			tvUser.setText(Session.getUserName());
 
-		// addPreferencesFromResource(R.xml.initialsettings);
-		// PreferenceManager.setDefaultValues(this, R.xml.initialsettings,
-		// false);
+			// addPreferencesFromResource(R.xml.initialsettings);
+			// PreferenceManager.setDefaultValues(this, R.xml.initialsettings,
+			// false);
 
-		// Moved to onResume to update the list of loggers
-		GetPreferences();
+			// Moved to onResume to update the list of loggers
+			GetPreferences();
 
-		StartAndBindService();
+			StartAndBindService();
+//		}
 
 	}
 
@@ -206,8 +205,8 @@ public class GpsMainActivity extends Activity implements
 				.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
 
 		String user = this.sharedPrefs.getString(MOAP_USER, "");
-		Log.e("GpsMainActivity", "hasUsername - User: " + user);
-		if (user == "") {
+		Log.e("GpsMainActivity", "hasUsername - User: " + user + " "+user.trim().length());
+		if (user.trim().length() == 0) {
 			return false;
 		}
 
@@ -216,12 +215,12 @@ public class GpsMainActivity extends Activity implements
 	}
 
 	private void initialize() {
-		
-		if(!hasUsername()){
+
+		if (!hasUsername()) {
 			changeUser();
-		}
-		else{
-			this.sharedPrefs = this.getSharedPreferences(MOAP, Context.MODE_PRIVATE);
+		} else {
+			this.sharedPrefs = this.getSharedPreferences(MOAP,
+					Context.MODE_PRIVATE);
 
 			String user = this.sharedPrefs.getString(MOAP_USER, "");
 			update(user);
@@ -230,7 +229,7 @@ public class GpsMainActivity extends Activity implements
 	}
 
 	private void update(String user) {
-		Log.e("GpsMainActivity", "Update user "+user);
+		Log.e("GpsMainActivity", "Update user " + user);
 		TextView tvUser = (TextView) findViewById(R.id.txtUser);
 		tvUser.setText(user);
 		Session.setUserName(user);
@@ -267,7 +266,6 @@ public class GpsMainActivity extends Activity implements
 		// Set an EditText view to get user input
 		final EditText input = new EditText(getApplicationContext());
 		input.setPressed(true);
-		
 
 		alert.setView(input);
 		alert.setPositiveButton(R.string.ok,
@@ -376,8 +374,9 @@ public class GpsMainActivity extends Activity implements
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		Utilities.LogDebug("GpsMainActivity.onCheckedChanged");
 		TextView txtUser = (TextView) findViewById(R.id.txtUser);
+		ToggleButton buttonOnOff = (ToggleButton) findViewById(R.id.buttonOnOff);
 		// EditText goal = (EditText) findViewById(R.id.goalComponent);
-//		Utilities.LogDebug("User: " + txtUser.getText().toString().trim());
+		// Utilities.LogDebug("User: " + txtUser.getText().toString().trim());
 		// Utilities.LogDebug("Goa: " + goal);
 
 		if (isChecked) {
@@ -388,6 +387,7 @@ public class GpsMainActivity extends Activity implements
 
 				loggingService.StartLogging();
 			} else {
+				buttonOnOff.setChecked(false);
 				changeUser();
 			}
 
@@ -589,30 +589,30 @@ public class GpsMainActivity extends Activity implements
 					HistoryActivity.class);
 			startActivity(history);
 			break;
-			// case R.id.mnuOSM:
-			// UploadToOpenStreetMap();
-			// break;
-			// case R.id.mnuDropBox:
-			// UploadToDropBox();
-			// break;
-			// case R.id.mnuGDocs:
-			// UploadToGoogleDocs();
-			// break;
-			// case R.id.mnuOpenGTS:
-			// SendToOpenGTS();
-			// break;
-			// case R.id.mnuEmail:
-			// SelectAndEmailFile();
-			// break;
-			// case R.id.mnuAnnotate:
-			// Annotate();
-			// break;
-			// case R.id.mnuShare:
-			// Share();
-			// break;
-			// case R.id.mnuEmailnow:
-			// EmailNow();
-			// break;
+		// case R.id.mnuOSM:
+		// UploadToOpenStreetMap();
+		// break;
+		// case R.id.mnuDropBox:
+		// UploadToDropBox();
+		// break;
+		// case R.id.mnuGDocs:
+		// UploadToGoogleDocs();
+		// break;
+		// case R.id.mnuOpenGTS:
+		// SendToOpenGTS();
+		// break;
+		// case R.id.mnuEmail:
+		// SelectAndEmailFile();
+		// break;
+		// case R.id.mnuAnnotate:
+		// Annotate();
+		// break;
+		// case R.id.mnuShare:
+		// Share();
+		// break;
+		// case R.id.mnuEmailnow:
+		// EmailNow();
+		// break;
 		case R.id.mnuChangeUser:
 			changeUser();
 			break;

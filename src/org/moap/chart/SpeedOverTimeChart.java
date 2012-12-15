@@ -39,7 +39,6 @@ public class SpeedOverTimeChart {
 			Log.d(TAG, "Number of trajectories "+this.model.getTrajectoryCount());
 			
 			for (Trajectory<LatLonPoint, DateTime> traj : this.model.getTrajectories()) {
-				
 				double speed = 0.0;
 				
 				XYSeries series = new XYSeries("Traj - " + traj.getId());
@@ -65,16 +64,22 @@ public class SpeedOverTimeChart {
 							previousPoint.getLongitude()) / 1000;
 					
 					Duration duration = new Duration(previousTime, time);
-//					Utilities
-//							.LogDebug(String.format("%s - %s", previousTime, time));
+					
+					
+					
 					double mili = duration.getMillis();
+					
 					double hours = mili / (1000 * 60 * 60); // convert mili to hours
 
 					speed = distance / hours;
 
+//					Utilities.LogDebug(String.format("speed = %s / %s = %s ",distance,hours, speed));
+					
 					series.add(j, speed);
+					
 					timeSeries.add(new Date(time.getMillisOfDay()), speed);
 				}
+				
 				dataset.addSeries(timeSeries);
 
 			}
