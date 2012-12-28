@@ -185,6 +185,10 @@
             android:name="arida.ufc.br.moapgpstracker.HistoryActivity"
             android:label="@string/title_activity_history" >
         </activity>
+        <activity
+            android:name="org.moap.logger.server.ServerAuthorizationActivity"
+            android:label="@string/title_activity_server_authorization" >
+        </activity>
     </application>
 
 </manifest>

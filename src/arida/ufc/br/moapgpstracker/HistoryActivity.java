@@ -23,11 +23,14 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+import com.mendhak.gpslogger.GpsMainActivity;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
@@ -43,7 +46,7 @@ import arida.ufc.br.moap.datamodelapi.imp.TrajectoryModelImpl;
 
 public class HistoryActivity extends MapActivity {
 
-	private enum ResponseType {
+	public enum ResponseType {
 		INTERNET_ISSUE, OK, ERROR
 	};
 
@@ -62,7 +65,16 @@ public class HistoryActivity extends MapActivity {
 
 		DateTime today = new DateTime();
 
-		getHistory(today, today.plusDays(1));
+		String username = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("server_login_key", "");
+		String token = getSharedPreferences(GpsMainActivity.MOAP, Context.MODE_PRIVATE).getString("user.gpstrackerserver.token", "");
+		
+		if(username.equalsIgnoreCase("") || token.equalsIgnoreCase("")){
+			Toast.makeText(HistoryActivity.this, "You should log in to the server", Toast.LENGTH_LONG);
+		}
+		else{
+			getHistory(token,username,today, today.plusDays(1));
+		}
+		
 	}
 
 	@Override
@@ -128,18 +140,18 @@ public class HistoryActivity extends MapActivity {
 		return false;
 	}
 
-	private void getHistory(DateTime begin, DateTime end) {
+	private void getHistory(final String username,final String token,DateTime begin, DateTime end) {
 
 		new AsyncTask<DateTime, Void, ResponseType>() {
 
 			@Override
 			protected ResponseType doInBackground(DateTime... params) {
 				// TODO Auto-generated method stub
-
-				String url = "http://sw4.us/ufc/";
+				// http://sw4.us/ufc/default.php?PHPSESSID=ak71dgl77rlcot4ig73hktshr6&q=2&id=1&start=0&end=2013-12-06+03:16:18
+				String url = "http://sw4.us/ufc/default.php";
 
 				// Parameters
-				url += "?q=2&" + "id=1&" + "start=" + params[0].toString(fmt)
+				url += "?PHPSESSID="+token+"q=2&" + "id="+username + "&start=" + params[0].toString(fmt)
 						+ "&end=" + params[1].toString(fmt);
 
 				Log.d(TAG, url);

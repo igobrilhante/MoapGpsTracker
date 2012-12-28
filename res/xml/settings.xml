@@ -12,7 +12,7 @@
                         android:summary="@string/log_opengts_summary" android:title="@string/log_opengts_title"/>
                         
     <CheckBoxPreference android:key="log_plain_text"
-                        android:summary="@string/log_plain_text_summary" android:title="@string/log_plain_text_title"/><CheckBoxPreference android:key="log_server" android:title="@string/log_server"/>
+                        android:summary="@string/log_plain_text_summary" android:title="@string/log_plain_text_title"/><Preference android:title="Log to Server" android:key="log_server_preference"/>
 
     <PreferenceScreen android:title="@string/pref_logging_title"
                       android:summary="@string/pref_logging_summary">
@@ -114,6 +114,7 @@
 
 
     </PreferenceScreen>
+    
     
 
 

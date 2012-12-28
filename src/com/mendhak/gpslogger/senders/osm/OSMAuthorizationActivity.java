@@ -41,7 +41,7 @@ public class OSMAuthorizationActivity extends PreferenceActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.osmsettings);
+//        addPreferencesFromResource(R.xml.osmsettings);
 
         final Intent intent = getIntent();
         final Uri myURI = intent.getData();

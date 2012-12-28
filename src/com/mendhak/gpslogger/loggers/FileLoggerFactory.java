@@ -17,6 +17,8 @@
 
 package com.mendhak.gpslogger.loggers;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 
 import com.mendhak.gpslogger.GpsMainActivity;
@@ -62,7 +64,7 @@ public class FileLoggerFactory
             loggers.add(new OpenGTSLogger(AppSettings.shouldUseSatelliteTime()));
         }
         
-        if(true){
+        if(AppSettings.shouldLogToServer()){
         	loggers.add(new ServerLogger(Integer.toString(1)));
         }
         

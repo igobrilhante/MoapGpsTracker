@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:key="log_server"
+        android:summary="@string/server_enable_summary"
+        android:title="@string/server_enable" />
+
+    <PreferenceCategory android:title="@string/server_category_signin" >
+        <EditTextPreference
+            android:dialogTitle="@string/server_login_title"
+            android:key="server_login_key"
+            android:summary="@string/server_login_summary"
+            android:title="@string/server_login_title" />
+        <EditTextPreference
+            android:dialogTitle="@string/server_pass_title"
+            android:key="server_pass_key"
+            android:summary="@string/server_pass_summary"
+            android:title="@string/server_pass_title" />
+        <Preference android:title="Log in" android:key="server_login_button"/>
+        <Preference android:title="Log out" android:key="server_logout_button" android:shouldDisableView="true"/>
+        
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/server_category_signup" >
+        
+        <EditTextPreference
+            android:dialogTitle="@string/server_signup_name"
+            android:key="server_signup_name"
+            android:title="@string/server_signup_name" /><EditTextPreference android:dialogTitle="@string/server_signup_username_title" android:key="server_signup_username" android:title="@string/server_signup_username_title" />
+        <EditTextPreference
+            android:dialogTitle="@string/server_pass_title"
+            android:key="server_signup_pass"
+            android:summary="@string/server_pass_summary"
+            android:title="@string/server_pass_title" />
+        <Preference android:title="Sign up" android:key="server_signup_button"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

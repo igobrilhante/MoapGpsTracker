@@ -17,7 +17,11 @@
 
 package com.mendhak.gpslogger.common;
 
+import com.mendhak.gpslogger.GpsMainActivity;
+
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class AppSettings extends Application
 {
@@ -60,10 +64,11 @@ public class AppSettings extends Application
     private static boolean shouldLogToServer;
     
     public static boolean shouldLogToServer(){
+//    	SharedPreferences prefs = getSharedPreferences(GpsMainActivity.MOAP, Context.MODE_PRIVATE);
     	return shouldLogToServer;
     }
     
-    public void setLogToServer(boolean enable){
+    public static void setLogToServer(boolean enable){
     	AppSettings.shouldLogToServer = enable;
     }
 

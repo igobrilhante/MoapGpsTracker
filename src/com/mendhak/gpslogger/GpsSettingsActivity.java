@@ -17,6 +17,8 @@
 
 package com.mendhak.gpslogger;
 
+import org.moap.logger.server.ServerAuthorizationActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -70,12 +72,23 @@ public class GpsSettingsActivity extends PreferenceActivity
 
         Preference enableDisablePref = findPreference("enableDisableGps");
         enableDisablePref.setOnPreferenceClickListener(new AndroidLocationPreferenceClickListener());
+        
+        Preference log_server = findPreference("log_server_preference");
+        log_server.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			
+			public boolean onPreferenceClick(Preference preference) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getApplicationContext(),ServerAuthorizationActivity.class);
+				startActivity(intent);
+				return true;
+			}
+		});
 
-        Preference osmSetupPref = findPreference("osm_setup");
-        osmSetupPref.setOnPreferenceClickListener(new OSMPreferenceClickListener());
+//        Preference osmSetupPref = findPreference("osm_setup");
+//        osmSetupPref.setOnPreferenceClickListener(new OSMPreferenceClickListener());
 
-        CheckBoxPreference chkLog_opengts = (CheckBoxPreference) findPreference("log_opengts");
-        chkLog_opengts.setOnPreferenceClickListener(new LogOpenGTSPreferenceClickListener(prefs));
+//        CheckBoxPreference chkLog_opengts = (CheckBoxPreference) findPreference("log_opengts");
+//        chkLog_opengts.setOnPreferenceClickListener(new LogOpenGTSPreferenceClickListener(prefs));
 
     }
 
