@@ -64,8 +64,21 @@ public class AppSettings extends Application
     private static boolean shouldLogToServer;
     
     public static boolean shouldLogToServer(){
-//    	SharedPreferences prefs = getSharedPreferences(GpsMainActivity.MOAP, Context.MODE_PRIVATE);
-    	return shouldLogToServer;
+    	AppSettings appSettings = new AppSettings();
+    	
+    	boolean token = appSettings.hasServerToken();
+    	
+    	if(token){
+    		return shouldLogToServer;
+    	}
+    	return token;
+    }
+    
+    private boolean hasServerToken(){
+    	SharedPreferences prefs = getSharedPreferences(GpsMainActivity.MOAP, Context.MODE_PRIVATE);
+    	
+    	return prefs.contains("user.gpstrackerserver.token");
+    	
     }
     
     public static void setLogToServer(boolean enable){

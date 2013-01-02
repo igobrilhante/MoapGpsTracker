@@ -8,26 +8,24 @@ import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 import arida.ufc.br.moapgpstracker.R;
-import arida.ufc.br.moapgpstracker.R.layout;
-import arida.ufc.br.moapgpstracker.R.menu;
 
 public class ServerAuthorizationActivity extends PreferenceActivity {
-	private ServerHelper serverHelper;
+	private final String TAG = "ServerAuthorizationActivity";
+	private ServerHelper serverHelper = new ServerHelper(getApplicationContext());
 	private SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d(TAG, "OnCreate");
 		super.onCreate(savedInstanceState);
 //		setContentView(R.layout.activity_server_authotization);
 		addPreferencesFromResource(R.xml.serversettings);
-		
-		this.serverHelper = new ServerHelper(getApplicationContext());
 		
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		
@@ -36,7 +34,8 @@ public class ServerAuthorizationActivity extends PreferenceActivity {
 		PreferenceScreen preferenceScreen = getPreferenceScreen();
 		
 		Preference login_button = (Preference)findPreference("server_login_button");
-		Preference logout_button = (Preference)findPreference("server_login_button");
+		Preference logout_button = (Preference)findPreference("server_logout_button");
+		
 
 		if(token==null){
 			
@@ -64,11 +63,22 @@ public class ServerAuthorizationActivity extends PreferenceActivity {
 			
 		}
 		else{
+			
+			logout_button.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				
+				public boolean onPreferenceClick(Preference preference) {
+					// TODO Auto-generated method stub
+					
+					final String login_name = prefs.getString("server_login_key", "");
+						serverHelper.signoutRequest(login_name);
+					
+					return true;
+				}
+			});
+			
 			preferenceScreen.addPreference(logout_button);
 			preferenceScreen.removePreference(login_button);
 		}
-		
-		
 		
 		Preference signup_button = (Preference)findPreference("server_signup_button");
 		signup_button.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -102,10 +112,10 @@ public class ServerAuthorizationActivity extends PreferenceActivity {
 		return true;
 	}
 	
-	private void update(){
-		
-		onContentChanged();
-	}
+//	private void update(){
+//		
+//		onContentChanged();
+//	}
 	
 	
 

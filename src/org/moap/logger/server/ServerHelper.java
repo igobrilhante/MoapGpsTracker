@@ -8,27 +8,23 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
-import org.moap.gpstracker.oauth.ActivityWebView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-import arida.ufc.br.moapgpstracker.R;
 import arida.ufc.br.moapgpstracker.HistoryActivity.ResponseType;
 
 import com.mendhak.gpslogger.common.IActionListener;
 
 public class ServerHelper implements IActionListener {
 	// http://sw4.us/ufc/default.php?PHPSESSID=ak71dgl77rlcot4ig73hktshr6&q=2&id=1&start=0&end=2013-12-06+03:16:18
-	final String basic_url = "http://sw4.us/ufc/default.php";
-	final String TAG = "ServerHelper";
+	private final String basic_url = "http://sw4.us/ufc/default.php";
+	private final String TAG = "ServerHelper";
 	private SharedPreferences sharedPrefs;
 	private final Context context;
+	private boolean ticket = true;
 
 	public ServerHelper(Context context) {
 		this.context = context;
@@ -36,7 +32,6 @@ public class ServerHelper implements IActionListener {
 
 	public void OnComplete() {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void OnFailure() {
@@ -44,168 +39,281 @@ public class ServerHelper implements IActionListener {
 
 	}
 
-	public void signinRequest(final String login_name, final String pass) {
+	public void signoutRequest(final String login_name) {
+		Log.d(TAG, "SignoutResquest");
 
-		AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+		if (ticket) {
+			ticket = false;
+			AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
 
-			@Override
-			protected String doInBackground(Void... params) {
-				// TODO Auto-generated method stub
+				@Override
+				protected String doInBackground(Void... params) {
+					// TODO Auto-generated method stub
 
-				String signin_url = basic_url + "?PHPSESSID" + "&q=0"
-						+ "login=" + login_name + "&pass=" + pass;
+					String signin_url = basic_url + "?PHPSESSID" + "&q=0"
+							+ "login=" + login_name + "_logout";
 
-				HttpGet http_get = new HttpGet(signin_url);
+					HttpGet http_get = new HttpGet(signin_url);
 
-				HttpClient client = new DefaultHttpClient();
-				HttpResponse response = null;
+					HttpClient client = new DefaultHttpClient();
+					HttpResponse response = null;
 
-				try {
-					response = client.execute(http_get);
-				} catch (Exception e) {
-					Log.w(TAG, "No internet connection", e);
-					// Toast.makeText(context, "No internet connection",
-					// Toast.LENGTH_SHORT).show();
-					return "No internet connection";
-				}
-
-				JSONObject jsonObject = null;
-				try {
-					jsonObject = new JSONObject(IOUtils.toString(response
-							.getEntity().getContent()));
-				} catch (Exception e) {
-					Log.e(TAG, "Wrong JSON format", e);
-					return "Wrong JSON format";
-				}
-
-				try {
-
-					if (jsonObject.has("meta")) {
-
-						int code = jsonObject.getJSONObject("meta").getInt(
-								"code");
-
-						if (code == 200) {
-
-							Log.d(TAG, "code " + code);
-
-							String token = jsonObject.getString("PHPSESSID");
-
-							sharedPrefs
-									.edit()
-									.putString("user.gpstrackerserver.token",
-											token).commit();
-
-
-						} else {
-
-							Log.w(TAG,
-									"Problem in the server: " + code
-											+ " Result: "
-											+ jsonObject.getString("result"));
-
-						
-							return jsonObject.getString("result");
-						}
+					try {
+						response = client.execute(http_get);
+					} catch (Exception e) {
+						Log.w(TAG, "No internet connection", e);
+						// Toast.makeText(context, "No internet connection",
+						// Toast.LENGTH_SHORT).show();
+						return "No internet connection";
 					}
-				} catch (Exception e) {
-					Log.e(TAG, "ERROR 2", e);
+
+					JSONObject jsonObject = null;
+					try {
+						jsonObject = new JSONObject(IOUtils.toString(response
+								.getEntity().getContent()));
+					} catch (Exception e) {
+						Log.e(TAG, "Wrong JSON format", e);
+						return "Wrong JSON format";
+					}
+
+					try {
+
+						if (jsonObject.has("meta")) {
+
+							int code = jsonObject.getJSONObject("meta").getInt(
+									"code");
+
+							if (code == 200) {
+
+								Log.d(TAG, "code " + code + " Result: "
+										+ jsonObject.getString("result"));
+
+							} else {
+
+								Log.w(TAG,
+										"Problem in the server: "
+												+ code
+												+ " Result: "
+												+ jsonObject
+														.getString("result"));
+
+								return jsonObject.getString("result");
+							}
+						}
+					} catch (Exception e) {
+						Log.e(TAG, "ERROR 2", e);
+					}
+
+					return "Success";
 				}
 
-				return "Success";
-			}
+				@Override
+				protected void onProgressUpdate(Void... params) {
+					Toast.makeText(context, "Signing in ...",
+							Toast.LENGTH_SHORT).show();
+				}
 
-			@Override
-			protected void onPostExecute(String v) {
-				Toast.makeText(context, v, Toast.LENGTH_SHORT).show();
+				@Override
+				protected void onPostExecute(String v) {
+					Toast.makeText(context, v, Toast.LENGTH_SHORT).show();
+					ticket = true;
+				}
 
-			}
+			};
 
-		};
+			task.execute();
+		}
+	}
 
-		task.execute();
+	public void signinRequest(final String login_name, final String pass) {
+		Log.d(TAG, "SigninResquest");
+
+		if (ticket) {
+			ticket = false;
+			AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+
+				@Override
+				protected String doInBackground(Void... params) {
+					// TODO Auto-generated method stub
+
+					String signin_url = basic_url + "?PHPSESSID" + "&q=0"
+							+ "login=" + login_name + "&pass=" + pass;
+
+					HttpGet http_get = new HttpGet(signin_url);
+
+					HttpClient client = new DefaultHttpClient();
+					HttpResponse response = null;
+
+					try {
+						response = client.execute(http_get);
+					} catch (Exception e) {
+						Log.w(TAG, "No internet connection", e);
+						// Toast.makeText(context, "No internet connection",
+						// Toast.LENGTH_SHORT).show();
+						return "No internet connection";
+					}
+
+					JSONObject jsonObject = null;
+					try {
+						jsonObject = new JSONObject(IOUtils.toString(response
+								.getEntity().getContent()));
+					} catch (Exception e) {
+						Log.e(TAG, "Wrong JSON format", e);
+						return "Wrong JSON format";
+					}
+
+					try {
+
+						if (jsonObject.has("meta")) {
+
+							int code = jsonObject.getJSONObject("meta").getInt(
+									"code");
+
+							if (code == 200) {
+
+								Log.d(TAG, "code " + code);
+
+								String token = jsonObject
+										.getString("PHPSESSID");
+
+								sharedPrefs
+										.edit()
+										.putString(
+												"user.gpstrackerserver.token",
+												token).commit();
+
+							} else {
+
+								Log.w(TAG,
+										"Problem in the server: "
+												+ code
+												+ " Result: "
+												+ jsonObject
+														.getString("result"));
+
+								return jsonObject.getString("result");
+							}
+						}
+					} catch (Exception e) {
+						Log.e(TAG, "ERROR 2", e);
+					}
+
+					return "Success";
+				}
+
+				@Override
+				protected void onProgressUpdate(Void... params) {
+					Toast.makeText(context, "Signing in ...",
+							Toast.LENGTH_SHORT).show();
+				}
+
+				@Override
+				protected void onPostExecute(String v) {
+					Toast.makeText(context, v, Toast.LENGTH_SHORT).show();
+					ticket = true;
+				}
+
+			};
+
+			task.execute();
+		}
 	}
 
 	public void signupRequest(final String name, final String login_name,
 			final String pass) {
+		Log.d(TAG, "SignUpResquest");
 
-		AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+		if (ticket) {
 
-			@Override
-			protected String doInBackground(Void... params) {
-				// TODO Auto-generated method stub
+			ticket = false;
 
-				String signup_url = basic_url + "?PHPSESSID" + "&q=4"
-						+ "login=" + login_name + "&pass=" + pass + "&name="
-						+ URLEncoder.encode(name);
+			AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
 
-				HttpGet http_get = new HttpGet(signup_url);
+				@Override
+				protected String doInBackground(Void... params) {
+					// TODO Auto-generated method stub
 
-				HttpClient client = new DefaultHttpClient();
-				HttpResponse response = null;
+					String signup_url = basic_url + "?PHPSESSID" + "&q=4"
+							+ "login=" + login_name + "&pass=" + pass
+							+ "&name=" + URLEncoder.encode(name);
 
-				try {
-					response = client.execute(http_get);
-				} catch (Exception e) {
-					Log.w(TAG, "No internet connection", e);
-					// Toast.makeText(context, "No internet connection",
-					// Toast.LENGTH_SHORT).show();
-					return "No internet connection";
-				}
+					HttpGet http_get = new HttpGet(signup_url);
 
-				JSONObject jsonObject = null;
-				try {
-					jsonObject = new JSONObject(IOUtils.toString(response
-							.getEntity().getContent()));
-				} catch (Exception e) {
-					Log.e(TAG, "Wrong JSON format", e);
-					return ResponseType.ERROR.toString();
-				}
+					HttpClient client = new DefaultHttpClient();
+					HttpResponse response = null;
 
-				try {
-
-					if (jsonObject.has("meta")) {
-
-						int code = jsonObject.getJSONObject("meta").getInt(
-								"code");
-
-						if (code == 200) {
-
-							Log.d(TAG, "code " + code);
-
-							// String token = jsonObject.getString("PHPSESSID");
-							//
-							// sharedPrefs.edit().putString("user.gpstrackerserver.token",
-							// token).commit();
-
-
-						} else {
-
-							Log.w(TAG,
-									"Problem in the server: " + code
-											+ " Result: "
-											+ jsonObject.getString("result"));
-
-							return jsonObject.getString("result");
-						}
+					try {
+						response = client.execute(http_get);
+					} catch (Exception e) {
+						Log.w(TAG, "No internet connection", e);
+						// Toast.makeText(context, "No internet connection",
+						// Toast.LENGTH_SHORT).show();
+						return "No internet connection";
 					}
-				} catch (Exception e) {
-					Log.e(TAG, "ERROR 2", e);
+
+					JSONObject jsonObject = null;
+					try {
+						jsonObject = new JSONObject(IOUtils.toString(response
+								.getEntity().getContent()));
+					} catch (Exception e) {
+						Log.e(TAG, "Wrong JSON format", e);
+						return ResponseType.ERROR.toString();
+					}
+
+					try {
+
+						if (jsonObject.has("meta")) {
+
+							int code = jsonObject.getJSONObject("meta").getInt(
+									"code");
+
+							if (code == 200) {
+
+								Log.d(TAG, "code " + code);
+
+								// String token =
+								// jsonObject.getString("PHPSESSID");
+								//
+								// sharedPrefs.edit().putString("user.gpstrackerserver.token",
+								// token).commit();
+
+							} else {
+
+								Log.w(TAG,
+										"Problem in the server: "
+												+ code
+												+ " Result: "
+												+ jsonObject
+														.getString("result"));
+
+								return jsonObject.getString("result");
+							}
+						}
+					} catch (Exception e) {
+						Log.e(TAG, "ERROR 2", e);
+					}
+
+					return "Success";
 				}
 
-				return "Success";
-			}
+				@Override
+				protected void onProgressUpdate(Void... params) {
+					Toast.makeText(context, "Signing up ...",
+							Toast.LENGTH_SHORT).show();
+				}
 
-			@Override
-			protected void onPostExecute(String v) {
+				@Override
+				protected void onPostExecute(String v) {
 
-				Toast.makeText(context, v, Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, v, Toast.LENGTH_SHORT).show();
+					ticket = true;
 
-			}
+				}
 
-		};
+			};
 
-		task.execute();
+			task.execute();
+		}
 	}
 
 }

@@ -69,7 +69,7 @@ public class HistoryActivity extends MapActivity {
 		String token = getSharedPreferences(GpsMainActivity.MOAP, Context.MODE_PRIVATE).getString("user.gpstrackerserver.token", "");
 		
 		if(username.equalsIgnoreCase("") || token.equalsIgnoreCase("")){
-			Toast.makeText(HistoryActivity.this, "You should log in to the server", Toast.LENGTH_LONG);
+			Toast.makeText(HistoryActivity.this, "You should log in to the server", Toast.LENGTH_LONG).show();
 		}
 		else{
 			getHistory(token,username,today, today.plusDays(1));

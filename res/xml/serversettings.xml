@@ -17,8 +17,8 @@
             android:key="server_pass_key"
             android:summary="@string/server_pass_summary"
             android:title="@string/server_pass_title" />
-        <Preference android:title="Log in" android:key="server_login_button"/>
-        <Preference android:title="Log out" android:key="server_logout_button" android:shouldDisableView="true"/>
+        <Preference android:title="Log in" android:key="server_login_button" android:summary="Click here to log in to GpsTracker Server"/>
+        <Preference android:title="Log out" android:key="server_logout_button" android:shouldDisableView="true" android:summary="Click here to log out from GpsTracker Server"/>
         
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/server_category_signup" >
@@ -32,7 +32,7 @@
             android:key="server_signup_pass"
             android:summary="@string/server_pass_summary"
             android:title="@string/server_pass_title" />
-        <Preference android:title="Sign up" android:key="server_signup_button"/>
+        <Preference android:title="Sign up" android:key="server_signup_button" android:summary="Click here to sign up to GpsTracker Server"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

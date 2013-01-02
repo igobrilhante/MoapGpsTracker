@@ -17,17 +17,14 @@
 
 package com.mendhak.gpslogger.loggers;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Environment;
-
-import com.mendhak.gpslogger.GpsMainActivity;
-import com.mendhak.gpslogger.common.AppSettings;
-import com.mendhak.gpslogger.common.Session;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.os.Environment;
+
+import com.mendhak.gpslogger.common.AppSettings;
+import com.mendhak.gpslogger.common.Session;
 
 public class FileLoggerFactory
 {
