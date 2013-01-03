@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.CheckBoxPreference;
 import android.util.Log;
 import android.widget.Toast;
 import arida.ufc.br.moapgpstracker.HistoryActivity.ResponseType;
@@ -98,6 +99,12 @@ public class ServerHelper implements IActionListener {
 								//
 								// return jsonObject.getString("result");
 							}
+							sharedPrefs
+							.edit()
+							.remove(
+									"user.gpstrackerserver.token").commit();
+							Log.d(TAG, "Removed token");
+							
 						}
 					} catch (Exception e) {
 						Log.e(TAG, "ERROR 2", e);

@@ -36,7 +36,7 @@ public class ServerAuthorizationActivity extends PreferenceActivity {
 		
 		
 		
-		CheckBoxPreference log_server = (CheckBoxPreference)findPreference("log_server");
+		final CheckBoxPreference log_server = (CheckBoxPreference)findPreference("log_server");
 		log_server.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			
 			public boolean onPreferenceClick(Preference preference) {
@@ -88,6 +88,7 @@ public class ServerAuthorizationActivity extends PreferenceActivity {
 				
 				
 				serverHelper.signoutRequest(login_name);
+				log_server.setChecked(false);
 				return true;
 			}
 		});

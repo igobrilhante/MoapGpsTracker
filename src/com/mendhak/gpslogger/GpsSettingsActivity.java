@@ -28,7 +28,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
 import arida.ufc.br.moapgpstracker.R;
 import com.mendhak.gpslogger.common.Utilities;
-import com.mendhak.gpslogger.senders.osm.OSMHelper;
 
 public class GpsSettingsActivity extends PreferenceActivity
 {
@@ -42,12 +41,12 @@ public class GpsSettingsActivity extends PreferenceActivity
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
-        if (getIntent().getBooleanExtra("autosend_preferencescreen", false))
-        {
-            PreferenceScreen screen = (PreferenceScreen) findPreference("gpslogger_preferences");
-            int pos = findPreference("autosend_preferencescreen").getOrder();
-            screen.onItemClick(null, null, pos, 0);
-        }
+//        if (getIntent().getBooleanExtra("autosend_preferencescreen", false))
+//        {
+//            PreferenceScreen screen = (PreferenceScreen) findPreference("gpslogger_preferences");
+//            int pos = findPreference("autosend_preferencescreen").getOrder();
+//            screen.onItemClick(null, null, pos, 0);
+//        }
 
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -120,16 +119,16 @@ public class GpsSettingsActivity extends PreferenceActivity
     /**
      * Opens the OpenStreetMap preferences screen
      */
-    private class OSMPreferenceClickListener implements OnPreferenceClickListener
-    {
-
-        public boolean onPreferenceClick(Preference preference)
-        {
-            startActivity(OSMHelper.GetOsmSettingsIntent(getApplicationContext()));
-
-            return true;
-        }
-    }
+//    private class OSMPreferenceClickListener implements OnPreferenceClickListener
+//    {
+//
+//        public boolean onPreferenceClick(Preference preference)
+//        {
+//            startActivity(OSMHelper.GetOsmSettingsIntent(getApplicationContext()));
+//
+//            return true;
+//        }
+//    }
 
 
     private class ImperialPreferenceChangeListener implements Preference.OnPreferenceChangeListener
@@ -222,27 +221,27 @@ public class GpsSettingsActivity extends PreferenceActivity
      * Opens the OpenGTS preferences
      * Listener to ensure that the server is configured when the user wants to enable OpenGTS logging logger
      */
-    private class LogOpenGTSPreferenceClickListener implements OnPreferenceClickListener
-    {
-        private SharedPreferences prefs;
-
-        public LogOpenGTSPreferenceClickListener(SharedPreferences prefs)
-        {
-            this.prefs = prefs;
-        }
-
-        public boolean onPreferenceClick(Preference preference)
-        {
-            CheckBoxPreference chkLog_opengts = (CheckBoxPreference) findPreference("log_opengts");
-            boolean opengts_enabled = prefs.getBoolean("opengts_enabled", false);
-
-            if (chkLog_opengts.isChecked() && !opengts_enabled)
-            {
-                startActivity(new Intent("com.mendhak.gpslogger.OPENGTS_SETUP"));
-            }
-            return true;
-        }
-    }
+//    private class LogOpenGTSPreferenceClickListener implements OnPreferenceClickListener
+//    {
+//        private SharedPreferences prefs;
+//
+//        public LogOpenGTSPreferenceClickListener(SharedPreferences prefs)
+//        {
+//            this.prefs = prefs;
+//        }
+//
+//        public boolean onPreferenceClick(Preference preference)
+//        {
+//            CheckBoxPreference chkLog_opengts = (CheckBoxPreference) findPreference("log_opengts");
+//            boolean opengts_enabled = prefs.getBoolean("opengts_enabled", false);
+//
+//            if (chkLog_opengts.isChecked() && !opengts_enabled)
+//            {
+//                startActivity(new Intent("com.mendhak.gpslogger.OPENGTS_SETUP"));
+//            }
+//            return true;
+//        }
+//    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus)
@@ -251,13 +250,13 @@ public class GpsSettingsActivity extends PreferenceActivity
         if (hasFocus)
         {
 
-            CheckBoxPreference chkLog_opengts = (CheckBoxPreference) findPreference("log_opengts");
-            boolean opengts_enabled = prefs.getBoolean("opengts_enabled", false);
-
-            if (chkLog_opengts.isChecked() && !opengts_enabled)
-            {
-                chkLog_opengts.setChecked(false);
-            }
+//            CheckBoxPreference chkLog_opengts = (CheckBoxPreference) findPreference("log_opengts");
+//            boolean opengts_enabled = prefs.getBoolean("opengts_enabled", false);
+//
+//            if (chkLog_opengts.isChecked() && !opengts_enabled)
+//            {
+//                chkLog_opengts.setChecked(false);
+//            }
 
         }
     }
