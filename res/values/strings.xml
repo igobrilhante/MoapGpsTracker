@@ -325,5 +325,6 @@
     <string name="server_signup_name">Name</string>
     <string name="server_signup_username_title">Username</string>
     <string name="suc_signup">Signing up complete!</string>
+    <string name="update">Update</string>
 
 </resources>
