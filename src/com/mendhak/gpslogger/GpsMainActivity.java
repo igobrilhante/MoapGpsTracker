@@ -42,6 +42,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
@@ -146,6 +147,9 @@ public class GpsMainActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 
 		Utilities.LogInfo("GPSLogger started");
+		
+		AppSettings.setSharedPreferences(getSharedPreferences(MOAP, Context.MODE_PRIVATE));
+		AppSettings.setDefaultSharedPreferences(PreferenceManager.getDefaultSharedPreferences(getBaseContext()));
 
 		setContentView(R.layout.main2);
 
@@ -244,6 +248,9 @@ public class GpsMainActivity extends Activity implements
 		if (this.sharedPrefs != null) {
 			this.sharedPrefs.edit().clear().commit();
 		}
+		
+		PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().remove("server_login_key").commit();
+		PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putBoolean("log_server", false).commit();
 	}
 
 	/*

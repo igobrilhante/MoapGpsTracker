@@ -45,6 +45,8 @@ import arida.ufc.br.moap.core.beans.Trajectory;
 import arida.ufc.br.moap.datamodelapi.imp.TrajectoryModelImpl;
 
 public class HistoryActivity extends MapActivity {
+	
+	private final int GMC_ZONE = -3;
 
 	public enum ResponseType {
 		INTERNET_ISSUE, OK, ERROR
@@ -72,7 +74,7 @@ public class HistoryActivity extends MapActivity {
 			Toast.makeText(HistoryActivity.this, "You should log in to the server", Toast.LENGTH_LONG);
 		}
 		else{
-			getHistory(token,username,today, today.plusDays(1));
+			getHistory(token,username,today, today.plusDays(2));
 		}
 		
 	}
@@ -140,7 +142,7 @@ public class HistoryActivity extends MapActivity {
 		return false;
 	}
 
-	private void getHistory(final String username,final String token,DateTime begin, DateTime end) {
+	private void getHistory(final String token,final String username,DateTime begin, DateTime end) {
 
 		new AsyncTask<DateTime, Void, ResponseType>() {
 
@@ -151,7 +153,7 @@ public class HistoryActivity extends MapActivity {
 				String url = "http://sw4.us/ufc/default.php";
 
 				// Parameters
-				url += "?PHPSESSID="+token+"q=2&" + "id="+username + "&start=" + params[0].toString(fmt)
+				url += "?PHPSESSID="+token+"&q=2" + "&id="+username + "&start=" + params[0].toString(fmt)
 						+ "&end=" + params[1].toString(fmt);
 
 				Log.d(TAG, url);
@@ -280,8 +282,13 @@ public class HistoryActivity extends MapActivity {
 					double lon = object.getDouble("long");
 					LatLonPoint point = new LatLonPoint(lon, lat);
 					String date = object.getString("time");
-
-					DateTime datetime = fmt_receive.parseDateTime(date);
+					
+					DateTime datetime;
+					if(GMC_ZONE < 0)
+						datetime = fmt_receive.parseDateTime(date).minusHours(GMC_ZONE*-1);
+					else{
+						datetime = fmt_receive.parseDateTime(date).plusHours(GMC_ZONE);
+					}
 					traj.addPoint(point, datetime);
 
 				}

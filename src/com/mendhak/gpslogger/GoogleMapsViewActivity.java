@@ -94,24 +94,24 @@ public class GoogleMapsViewActivity extends MapActivity {
 									Utilities.convertCoordinates(p
 											.getLongitude()));
 							
-							String checkin_annotation = (String) p.getAnnotations().getAnnotation("checkin").getValue();
-							String comment_annotation = (String) p.getAnnotations().getAnnotation("comment").getValue();
+//							String checkin_annotation = (String) p.getAnnotations().getAnnotation("checkin").getValue();
+//							String comment_annotation = (String) p.getAnnotations().getAnnotation("comment").getValue();
 							
 							OverlayItem oi = new OverlayItem(geoPoint, "", "");
 							
-							if(checkin_annotation != null){
-								Log.d("GoogleMapsViewAcitivity", "Annotation - Check-in");
-								
-								OverlayItem itemized_oi = new OverlayItem(geoPoint, checkin_annotation, "Check-in");
-								custom_overlay.addOverlayItem(itemized_oi);
-							}
-							else if(comment_annotation != null ){
-								Log.d("GoogleMapsViewAcitivity", "Annotation - Comment");
-								
-								OverlayItem itemized_oi = new OverlayItem(geoPoint, comment_annotation, "Comment");
-								oi.setMarker(comment_icon);
-								custom_overlay.addOverlayItem(itemized_oi);
-							}
+//							if(checkin_annotation != null){
+//								Log.d("GoogleMapsViewAcitivity", "Annotation - Check-in");
+//								
+//								OverlayItem itemized_oi = new OverlayItem(geoPoint, checkin_annotation, "Check-in");
+//								custom_overlay.addOverlayItem(itemized_oi);
+//							}
+//							else if(comment_annotation != null ){
+//								Log.d("GoogleMapsViewAcitivity", "Annotation - Comment");
+//								
+//								OverlayItem itemized_oi = new OverlayItem(geoPoint, comment_annotation, "Comment");
+//								oi.setMarker(comment_icon);
+//								custom_overlay.addOverlayItem(itemized_oi);
+//							}
 							
 							googleMapsOverlay.addOverlayItem(oi);
 

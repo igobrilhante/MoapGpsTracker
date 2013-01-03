@@ -63,14 +63,38 @@ public class AppSettings extends Application
     
     private static boolean shouldLogToServer;
     
-    public static boolean shouldLogToServer(){
-//    	SharedPreferences prefs = getSharedPreferences(GpsMainActivity.MOAP, Context.MODE_PRIVATE);
+    private static SharedPreferences sharedPreferences;
+    private static SharedPreferences defaultSharedPreferences;
+
+    public static SharedPreferences getDefaultSharedPreferences() {
+		return defaultSharedPreferences;
+	}
+
+	public static void setDefaultSharedPreferences(
+			SharedPreferences defaultSharedPreferences) {
+		AppSettings.defaultSharedPreferences = defaultSharedPreferences;
+	}
+
+	public static SharedPreferences getSharedPreferences() {
+		return sharedPreferences;
+	}
+
+	public static void setSharedPreferences(SharedPreferences sharedPreferences) {
+		AppSettings.sharedPreferences = sharedPreferences;
+	}
+
+	public static boolean shouldLogToServer(){
+    	
     	return shouldLogToServer;
     }
     
     public static void setLogToServer(boolean enable){
     	AppSettings.shouldLogToServer = enable;
     }
+    
+//    public SharedPreferences getSharedPreferences(){
+//    	return getSharedPreferences(GpsMainActivity.MOAP, Context.MODE_PRIVATE);
+//    }
 
     /**
      * @return the useImperial

@@ -65,7 +65,14 @@ public class FileLoggerFactory
         }
         
         if(AppSettings.shouldLogToServer()){
-        	loggers.add(new ServerLogger(Integer.toString(1)));
+        	SharedPreferences prefs = AppSettings.getSharedPreferences();
+        	SharedPreferences defaultPrefs = AppSettings.getDefaultSharedPreferences();
+        	
+        	String token = prefs.getString("user.gpstrackerserver.token", null);
+        	String name = defaultPrefs.getString("server_login_key", null);
+        	
+        	if(!(token == null || name == null))
+        	loggers.add(new ServerLogger(token,name));
         }
         
 //        File file = new File(gpxFolder.getPath(), prefix  + ".csv");

@@ -41,6 +41,8 @@ public class Session extends Application
     private static float autoSendDelay;
     private static long latestTimeStamp;
     private static String username;
+    private static String server_username;
+    private static String server_session;
     private static boolean addNewTrackSegment = true;
     private static Location currentLocationInfo;
     private static Location previousLocationInfo;

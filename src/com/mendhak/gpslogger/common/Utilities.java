@@ -120,6 +120,8 @@ public class Utilities
         Utilities.LogInfo("Getting preferences");
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
+        
+        
 
         AppSettings.setUseImperial(prefs.getBoolean("useImperial", false));
         AppSettings.setUseSatelliteTime(prefs.getBoolean("satellite_time",
@@ -556,8 +558,8 @@ public class Utilities
     {
         /*
             Haversine formula:
-            A = sin��(��lat/2) + cos(lat1).cos(lat2).sin��(��long/2)
-            C = 2.atan2(���a, ���(1���a))
+            A = sin������(������lat/2) + cos(lat1).cos(lat2).sin������(������long/2)
+            C = 2.atan2(���������a, ���������(1���������a))
             D = R.c
             R = radius of earth, 6371 km.
             All angles are in radians
