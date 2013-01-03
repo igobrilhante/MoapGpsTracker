@@ -8,8 +8,8 @@
     <CheckBoxPreference android:key="log_kml"
                         android:summary="@string/log_kml_summary" android:title="@string/log_kml_title"/>
 
-    <CheckBoxPreference android:key="log_opengts"
-                        android:summary="@string/log_opengts_summary" android:title="@string/log_opengts_title"/>
+    <!-- <CheckBoxPreference android:key="log_opengts"
+                        android:summary="@string/log_opengts_summary" android:title="@string/log_opengts_title"/> -->
                         
     <CheckBoxPreference android:key="log_plain_text"
                         android:summary="@string/log_plain_text_summary" android:title="@string/log_plain_text_title"/><Preference android:title="Log to Server" android:key="log_server_preference"/>
@@ -70,7 +70,7 @@
                             android:key="debugtofile" android:defaultValue="false"/>
 
     </PreferenceScreen>
-    <PreferenceScreen android:key="autosend_preferencescreen" android:title="@string/pref_autosend_title" android:summary="@string/pref_autosend_summary">
+    <!-- <PreferenceScreen android:key="autosend_preferencescreen" android:title="@string/pref_autosend_title" android:summary="@string/pref_autosend_summary">
 
         <CheckBoxPreference android:key="autosend_enabled"
                             android:title="@string/autosend_enabled"
@@ -113,7 +113,7 @@
 
 
 
-    </PreferenceScreen>
+    </PreferenceScreen> -->
     
     
 
