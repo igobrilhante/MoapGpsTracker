@@ -1424,17 +1424,17 @@ public class GpsMainActivity extends Activity implements
 		if (newFileName == null || newFileName.length() <= 0) {
 			return;
 		}
-
+		
 		TextView txtFilename = (TextView) findViewById(R.id.txtFileName);
 
-		if (AppSettings.shouldLogToGpx() || AppSettings.shouldLogToKml()) {
+//		if (AppSettings.shouldLogToGpx() || AppSettings.shouldLogToKml()) {
 
 			txtFilename.setText(getString(
 					R.string.summary_current_filename_format,
 					Session.getCurrentFileName()));
-		} else {
-			txtFilename.setText("");
-		}
+//		} else {
+//			txtFilename.setText("");
+//		}
 
 	}
 
