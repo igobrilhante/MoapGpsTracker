@@ -26,7 +26,6 @@
 
     <!-- suppress AndroidDomInspection -->
     <application
-        android:debuggable="true"
         android:name="@string/app_name"
         android:allowClearUserData="true"
         android:icon="@drawable/ic_launcher_3"
